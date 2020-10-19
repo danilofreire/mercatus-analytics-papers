@@ -1,0 +1,89 @@
+---
+title: Democratising Policy Analytics with AutoML
+author: Danilo Freire[^info]
+date: 15th of October, 2020
+abstract: ""
+fontsize: 12pt
+bibliography: references.bib
+biblio-style: apalike
+output: pdf_document
+header-includes:
+   - \usepackage{libertine}
+   - \usepackage{inconsolata}
+   - \usepackage{setspace}
+   - \usepackage{amsmath}
+---
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# If you need to install any package while knitting the document
+r <- getOption("repos")
+r["CRAN"] <- "https://cran.rstudio.com/"
+options(repos = r)
+if (!require("kableExtra")) {
+    install.packages("kableExtra")
+}
+```
+
+[^info]: Independent researcher,
+[danilofreire@gmail.com](mailto:danilofreire@gmail.com),
+<https://danilofreire.github.io>.
+
+# Introduction
+\label{sec:into}
+
+Machine learning has made steady inroads into the social sciences. Although
+causal inference designs have become pervasive over the last years
+[@angrist2008mostly], machine learning models are particularly useful to tackle
+"prediction policy problems", in which increasing predictive accuracy is more
+important that generating unbiased regression coefficients
+[@kleinberg2015prediction]. For instance, scholars have employed algorithmic
+modelling to forecast civil wars [@muchlinski2016comparing; @ward2010perils],
+mass killings [@freire2018drives; @ulfelder2013multimodel], and state
+repression [@hill2014empirical]. Supervised learning methods have also been
+used to allocate fire departments and health inspections teams
+[@athey2017beyond]. Therefore, computer algorithms can improve social policy by
+making interventions more timely and better targeted.
+
+Despite the popularity of predictive analytics, building machine learning
+models remains a labour-intensive task. Practitioners apply several
+preprocessing steps just to make their data suitable for analysis, and they
+have few guidelines when it comes to parameter optimisation and algorithm
+selection [@elshawi2019automated]. As a result, many areas that could benefit
+from predictive algorithms do not exploit their full potential due to
+implementation challenges and lack of technical expertise
+[@amershi2019software; @truong2019towards; @yang2018grounding]. In this regard,
+methods that simplify the machine learning pipeline can have significant
+academic and policy impacts [@ahmed2020framework; @healy2017bridging].
+
+Automated machine learning (AutoML) aims to fill this gap. AutoML is an
+emerging framework that automatically chooses and optimises machine learning
+algorithms. More specifically, AutoML provides data-driven tools to minimise or
+eliminate the human effort in the machine learning process, including data
+preprocessing, feature engineering, model selection, hyperparameter tuning, and
+model interpretation [@elshawi2019automated]. These automated methods not only
+free machine learning specialists from error-prone and tedious tasks, but also
+make state-of-the-art algorithms accessible to non-specialists, promoting what
+AutoML supporters call the "democratisation" of artificial intelligence
+[@hutter2019automated, ix; @shang2019democratizing]. AutoML approaches have
+been very successful in prediction challenges, and they consistently reach the
+top 5% in public machine learning competitions. Judging by these results,
+AutoML is a helpful tool for users with no expertise in machine learning and
+also provides benchmarks for specialists to attain [@hutter2019automated].
+
+In this paper, I introduce five Python AutoML algorithms that policy analysts
+may consider in their work. All of the algorithms are open source, actively
+maintained, and easy to use. Then, I replicate three 
+
+
+how users with
+little knowledge of machine learning can quickly build and deploy their
+models[^tabular]. Then I replicate 
+
+
+[^tabular]: Here I only cover algorithms that use tabular data as inputs since
+this is the format policy analysts encounter more often. However, there are
+AutoML models for image or text classification.
+
+
+
+# References
