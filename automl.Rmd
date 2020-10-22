@@ -92,7 +92,7 @@ I will also indicate AutoML packages that classify images, texts, and speeches,
 as scholars may be interested in these data.
 
 Lastly, I discuss how users can make their AutoML scalable and reproducible
-with Docker containers. Docker allow researchers to create an image of their
+with Docker containers. Docker allows researchers to create an image of their
 complete working environment, thus all AutoML specifications and dependencies
 are automatically embedded in the Docker file. While Docker has been widely
 employed in business applications, its use in academia remains limited. I will
