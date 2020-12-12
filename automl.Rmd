@@ -21,6 +21,7 @@ header-includes:
 r <- getOption("repos")
 r["CRAN"] <- "https://cran.rstudio.com/"
 options(repos = r)
+
 if (!require("kableExtra")) {
     install.packages("kableExtra")
 }
@@ -28,6 +29,14 @@ if (!require("reticulate")) {
     install.packages("reticulate")
 }
 library(kableExtra); library(reticulate)
+
+def_chunk_hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def_chunk_hook(x, options)
+  ifelse(options$size != "normalsize",
+         paste0("\n \\", options$size, "\n\n", x,
+                "\n\n \\normalsize"), x)
+})
 ```
 
 [^info]: Independent researcher,
@@ -134,19 +143,37 @@ supported by large firms and open source communities. The algorithms are
 `H2O AutoML` [@ledell2020h2o], `MLBOX` [@mlbox2020], and `TPOT`
 [@olson2016tpot]. While many other methods exist, the ones I discuss here are
 suitable for beginners, free to use, and can tackle a myriad of public policy
-problems, such as time series forecasting, binary and multilevel
+problems, such as time series forecasting, binary and multinomial
 classification, and anomaly detection.
 
 ## AutoGluon
 
-`AutoGluon` is an automated deep learning framework developed by Amazon Web
+`AutoGluon` is an automated machine learning framework developed by Amazon Web
 Service Labs. It allows users to ensemble multiple models and stack them into
 many layers, which often increases forecasting accuracy. `AutoGluon` is under
 active development and its code is available at
 <https://github.com/awslabs/autogluon>. The Python library is also easy to
-install and deploy, and researchers can create a powerful deep learning model
-to predict tabular data with only a single line of code
-[@erickson2020autogluon, 1]. 
+install and deploy, and researchers can create powerful deep learning or
+tree-based models with just three lines of code [@erickson2020autogluon, 1].
+Indeed, non-experts only need to know three functions to get started with the
+library, namely `Dataset()`, `fit()`, and `predict()`. The basic model pipeline
+looks like this:
+
+\vspace{.3cm}
+
+```{python, eval = FALSE, size="footnotesize"}
+pip install autogluon                                      # install library
+import autogluon as ag                                     # load library
+from autogluon import TabularPrediction as task            # import module
+
+data = task.Dataset("path/to/dataset")                     # load data
+predictor = task.fit(data_train, label=dependent_variable) # fit model
+prediction = predictor.predict(new_data)                   # predict
+```
+
+Experienced machine learning practitioners may also adapt the `fit()` function
+to their needs. For instance, one can choose different learners to estimate
+the models -- random forests, 
 
 
 
