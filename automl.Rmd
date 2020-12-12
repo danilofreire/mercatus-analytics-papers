@@ -6,7 +6,9 @@ abstract: ""
 fontsize: 12pt
 bibliography: references.bib
 biblio-style: apalike
-output: pdf_document
+output: 
+   pdf_document:
+     number_sections: true
 header-includes:
    - \usepackage{libertine}
    - \usepackage{inconsolata}
@@ -22,6 +24,10 @@ options(repos = r)
 if (!require("kableExtra")) {
     install.packages("kableExtra")
 }
+if (!require("reticulate")) {
+    install.packages("reticulate")
+}
+library(kableExtra); library(reticulate)
 ```
 
 [^info]: Independent researcher,
@@ -65,7 +71,7 @@ engineering, model selection, hyperparameter tuning, and model interpretation
 [@elshawi2019automated]. AutoML not only frees machine learning specialists
 from tedious and error-prone tasks, but also makes state-of-the-art algorithms
 accessible to regular users. According to their proponents, AutoML promotes a
-true "democratisation" of artificial intelligence [@hutter2019automated, ix;
+true democratisation of artificial intelligence [@hutter2019automated, ix;
 @shang2019democratizing]. AutoML approaches have also been very successful in
 prediction challenges, and they consistently reach the top 5% in public machine
 learning competitions [@autogluon2020kaggle; @googleblog2020automl]. 
@@ -89,7 +95,67 @@ website and share their Docker containers with co-authors and referees.
 
 # A Brief Introduction to AutoML Algorithms
 
+Automated algorithms are a recent addition to the machine learning field.
+@thornton2013auto proposed the first method to jointly address the problems of
+algorithm selection and parameter optimisation, and their results showed that
+automated solutions often outperformed baseline methods. Since then, the
+literature has grown significantly. Today, there is today a multitude of AutoML
+algorithms available for non-expert users, which are not only able to predict
+numeric data, but also to classify objects, translate text, annotate videos,
+and perform sentiment analysis in social media [@liu2020far].
+
+The intuition behind AutoML algorithms is quite simple. First, the algorithm
+splits the data into training and testing sets and applies different models to
+them in each iteration. Then, the algorithm selects the model which achieves
+the best performance in a given evaluation metric, such as the mean squared
+error or classification accuracy. AutoML can find the most suitable machine
+learning method by testing every model separately or by combining a diverse set
+of models and applying optimisation techniques to speed up the process. The
+next step is to find the best set of model hyperparameters to further improve
+the predictive ability of the chosen method. The process here is similar to the
+previous one. The algorithm tests many combinations of parameters and selects
+the one which gives the best results in the original metric. There are several
+ways to achieve these goals, and the literature is rapidly evolving, but these
+are the main principles that guide every AutoML algorithm.
+
+Most AutoML libraries also perform feature engineering tasks without human
+intervention. Feature engineering is the process of recoding variables to
+improve the performance of machine learning algorithms. Common tasks include
+creating dummy variables from categorical indicators, filling missing data,
+standardising numeric covariates, or removing features that are strongly
+correlated to avoid multicollinearity [@he2020automl; @truong2019towards].
+AutoML takes a data-driven approach here too, and selects those data
+transformations that contribute the most to improving forecasting scores.
+
+Here I present five AutoML methods that have gained popularity over the last
+years. They are all available for the Python programming language and are
+supported by large firms and open source communities. The algorithms are
+`AutoGluon` [@erickson2020autogluon], `Auto-sklearn` [@feurer2015efficient],
+`H2O AutoML` [@ledell2020h2o], `MLBOX` [@mlbox2020], and `TPOT`
+[@olson2016tpot]. While many other methods exist, the ones I discuss here are
+suitable for beginners, free to use, and can tackle a myriad of public policy
+problems, such as time series forecasting, binary and multilevel
+classification, and anomaly detection.
+
+## AutoGluon
+
+`AutoGluon` is an automated deep learning framework developed by Amazon Web
+Service Labs. It allows users to ensemble multiple models and stack them into
+many layers, which often increases forecasting accuracy. `AutoGluon` is under
+active development and its code is available at
+<https://github.com/awslabs/autogluon>. The Python library is also easy to
+install and deploy, and researchers can create a powerful deep learning model
+to predict tabular data with only a single line of code
+[@erickson2020autogluon, 1]. 
 
 
+
+
+
+
+
+
+
+\newpage
 
 # References
