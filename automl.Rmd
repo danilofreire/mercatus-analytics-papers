@@ -10,11 +10,12 @@ output:
    pdf_document:
      number_sections: true
 header-includes:
-   - \usepackage[utf8]{inputenc}
+   - \usepackage[UKenglish]{babel}
+   - \usepackage[UKenglish]{isodate}
    - \usepackage{libertine}
+   - \usepackage[libertine]{newtxmath}
    - \usepackage{inconsolata}
    - \usepackage{setspace}
-   - \usepackage{amsmath}
 ---
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
@@ -29,7 +30,6 @@ if (!require("kableExtra")) {
 if (!require("reticulate")) {
     install.packages("reticulate")
 }
-library(kableExtra); library(reticulate)
 
 def_chunk_hook  <- knitr::knit_hooks$get("chunk")
 knitr::knit_hooks$set(chunk = function(x, options) {
@@ -86,22 +86,22 @@ true democratisation of artificial intelligence [@hutter2019automated, ix;
 prediction challenges, and they consistently reach the top 5% in public machine
 learning competitions [@autogluon2020kaggle; @googleblog2020automl].
 
-In this paper, I introduce five Python AutoML algorithms that policy analysts
+In this paper, I introduce four Python AutoML algorithms that policy analysts
 may consider in their work. In the first section, I describe the main
 functionalities of `AutoGluon` [@erickson2020autogluon], `Auto-sklearn`
-[@feurer2015efficient], `H2O AutoML` [@ledell2020h2o], `MLBOX` [@mlbox2020],
-and `TPOT` [@olson2016tpot]. All of the algorithms are open source, actively
-maintained, and easy to use, thus suitable for both academic and business
-environments. In the third section, I replicate two articles that employ
-expert-coded machine learning models and show that AutoML can achieve
-comparable or better predictive performance with only a few lines of code.
-Lastly, I discuss how users can make their AutoML scalable and reproducible
-with Docker containers. Docker allows researchers to create an image of their
-complete working environment, thus all AutoML specifications and dependencies
-are automatically embedded in the Docker file. While Docker has been widely
-employed in business applications, its use in academia remains limited. I
-provide a simple tutorial so that readers can upload their AutoML setups to a
-website and share their Docker containers with co-authors and referees.
+[@feurer2015efficient], `H2O AutoML` [@ledell2020h2o], and `TPOT`
+[@olson2016tpot]. All of the algorithms are open source, actively maintained,
+and easy to use, thus suitable for both academic and business environments. In
+the third section, I replicate two articles that employ expert-coded machine
+learning models and show that AutoML can achieve comparable or better predictive
+performance with only a few lines of code. Lastly, I discuss how users can make
+their AutoML scalable and reproducible with Docker containers. Docker allows
+researchers to create an image of their complete working environment, thus all
+AutoML specifications and dependencies are automatically embedded in the Docker
+file. While Docker has been widely employed in business applications, its use in
+academia remains limited. I provide a simple tutorial so that readers can upload
+their AutoML setups to a website and share their Docker containers with
+co-authors and referees.
 
 # A Brief Introduction to AutoML Algorithms
 
@@ -137,16 +137,6 @@ correlated to avoid multicollinearity [@he2020automl; @truong2019towards].
 AutoML takes a data-driven approach here too, and selects those data
 transformations that contribute the most to improving forecasting scores.
 
-Here I present five AutoML methods that have gained popularity over the last
-years. They are all available for the Python programming language and are
-supported by large firms and open source communities. The algorithms are
-`AutoGluon` [@erickson2020autogluon], `Auto-sklearn` [@feurer2015efficient],
-`H2O AutoML` [@ledell2020h2o], `MLBOX` [@mlbox2020], and `TPOT`
-[@olson2016tpot]. While many other methods exist, the ones I discuss here are
-suitable for beginners, free to use, and can tackle a myriad of public policy
-problems, such as time series forecasting, binary and multinomial
-classification, and anomaly detection.
-
 ## AutoGluon
 
 `AutoGluon` is an automated machine learning framework developed by Amazon Web
@@ -173,23 +163,26 @@ predictions = model.predict(new_data)                      # predict
 ```
 
 Experienced machine learning practitioners may also adapt the `fit()` function
-to their needs and choose amongst different learners and
-change hyperparameter settings. However, the default configurations
-probably suit most users. Moreover, `AutoGluon` can distribute the calculations
-across multiple computers, which is handy if you have access to
-Google Cloud or Amazon EC2.
+to their needs and choose amongst different learners and change hyperparameter
+settings. However, the default configurations probably suit most users.
+Moreover, `AutoGluon` can distribute the calculations across multiple computers,
+which is handy if you have access to Google Cloud or Amazon EC2.
 
 ## Auto-sklearn
 
 `Auto-sklearn` is an AutoML library built on top of `scikit-learn` [@scikit],
 one of the most popular machine learning modules for Python. Developed by a
 research team from the University of Freiburg and the University of Hannover,
-`Auto-sklearn` uses a meta-learning method that compares similar datasets
-and identify which algorithm is most adequate for that particular prediction
-tests. According to the authors, this procedure improves the library performance
-and speeds up processing times.[^metalearner] `Auto-sklearn` has proved
-successful in machine learning competitions, too. In 2016, the algorithm won six
-out of ten tracks of the ChaLearn Automatic Machine Learning Challenge[^chalearn], that evaluated the accuracy of AutoML models estimated without any human intervention. It is straightforward for users to get started with `Auto-sklearn`. For instance, the code below runs an automated classification model:
+`Auto-sklearn` uses a meta-learning method that compares similar datasets and
+identify which algorithm is most adequate for that particular prediction tests.
+According to the authors, this procedure improves the library performance and
+speeds up processing times.[^metalearner] `Auto-sklearn` has proved successful
+in machine learning competitions, too. In 2016, the algorithm won six out of ten
+tracks of the ChaLearn Automatic Machine Learning Challenge[^chalearn], that
+evaluated the accuracy of AutoML models estimated without any human
+intervention. It is straightforward for users to get started with
+`Auto-sklearn`. For instance, the code below runs an automated classification
+model:
 
 [^metalearner]: For more details, see
 <https://www.automl.org/automl/auto-sklearn/>.
@@ -252,13 +245,34 @@ x = train.columns                                # independent variables
 y = "dependent_variable_name"                    # dependent variable
 x.remove(y)                                      # remove dependent variable from matrix
 
-model = H2OAutoML(max_models=30, seed=1234)      # run AutoML for 30 models
+model = H2OAutoML(max_models=30, seed=1234)      # run 30 machine learning models
 model.train(x=x, y=y, training_frame=train)      # estimate model
 predictions = model.predict(test)                # get predictions
 ```
 
+One feature that sets `H2O AutoML` apart from the other packages shown here is
+its large collection of model explainability functions. Critics have pointed out
+that most machine learning methods are "black boxes", in the sense that they
+display little information about how the estimation is made
+[@molnar2020interpretable]. This has serious consequences in fields where
+decision mechanisms are relevant per se, like judicial sentences or health care
+allocation. `H2O AutoML` addresses this issue by offering explanation functions
+that shows how the model perform as a whole and how it explains each individual
+observation.[^explain] The algorithm also shows the importance of every
+predictor [@gromping2009variable], SHAP values [@lundberg2020local], and partial
+dependence plots [@friedman2003multiple].
 
+[^explain]: Please visit
+<http://docs.h2o.ai/h2o/latest-stable/h2o-docs/explain.html> for more
+information on `H2O AutoML`'s model explainability functions.
 
+## TPOT
+
+The last algorithm presented in this section is `TPOT`, or _Tree-based Pipeline
+Optimization Tool_. It is one of oldest AutoML solutions for Python, and its
+authors have won several awards for their work on the algorithm.[^tpot-awards] 
+
+[^tpot-awards]: A list of the awards is available at <http://automl.info/tpot/>.
 
 
 
