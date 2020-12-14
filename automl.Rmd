@@ -6,10 +6,11 @@ abstract: ""
 fontsize: 12pt
 bibliography: references.bib
 biblio-style: apalike
-output: 
+output:
    pdf_document:
      number_sections: true
 header-includes:
+   - \usepackage[utf8]{inputenc}
    - \usepackage{libertine}
    - \usepackage{inconsolata}
    - \usepackage{setspace}
@@ -83,7 +84,7 @@ accessible to regular users. According to their proponents, AutoML promotes a
 true democratisation of artificial intelligence [@hutter2019automated, ix;
 @shang2019democratizing]. AutoML approaches have also been very successful in
 prediction challenges, and they consistently reach the top 5% in public machine
-learning competitions [@autogluon2020kaggle; @googleblog2020automl]. 
+learning competitions [@autogluon2020kaggle; @googleblog2020automl].
 
 In this paper, I introduce five Python AutoML algorithms that policy analysts
 may consider in their work. In the first section, I describe the main
@@ -91,7 +92,7 @@ functionalities of `AutoGluon` [@erickson2020autogluon], `Auto-sklearn`
 [@feurer2015efficient], `H2O AutoML` [@ledell2020h2o], `MLBOX` [@mlbox2020],
 and `TPOT` [@olson2016tpot]. All of the algorithms are open source, actively
 maintained, and easy to use, thus suitable for both academic and business
-environments. In the following section, I replicate two articles that employ
+environments. In the third section, I replicate two articles that employ
 expert-coded machine learning models and show that AutoML can achieve
 comparable or better predictive performance with only a few lines of code.
 Lastly, I discuss how users can make their AutoML scalable and reproducible
@@ -167,13 +168,100 @@ import autogluon as ag                                     # load library
 from autogluon import TabularPrediction as task            # import module
 
 data = task.Dataset("path/to/dataset")                     # load data
-predictor = task.fit(data_train, label=dependent_variable) # fit model
-prediction = predictor.predict(new_data)                   # predict
+model = task.fit(data_train, label=dependent_variable)     # fit model
+predictions = model.predict(new_data)                      # predict
 ```
 
 Experienced machine learning practitioners may also adapt the `fit()` function
-to their needs. For instance, one can choose different learners to estimate
-the models -- random forests, 
+to their needs and choose amongst different learners and
+change hyperparameter settings. However, the default configurations
+probably suit most users. Moreover, `AutoGluon` can distribute the calculations
+across multiple computers, which is handy if you have access to
+Google Cloud or Amazon EC2.
+
+## Auto-sklearn
+
+`Auto-sklearn` is an AutoML library built on top of `scikit-learn` [@scikit],
+one of the most popular machine learning modules for Python. Developed by a
+research team from the University of Freiburg and the University of Hannover,
+`Auto-sklearn` uses a meta-learning method that compares similar datasets
+and identify which algorithm is most adequate for that particular prediction
+tests. According to the authors, this procedure improves the library performance
+and speeds up processing times.[^metalearner] `Auto-sklearn` has proved
+successful in machine learning competitions, too. In 2016, the algorithm won six
+out of ten tracks of the ChaLearn Automatic Machine Learning Challenge[^chalearn], that evaluated the accuracy of AutoML models estimated without any human intervention. It is straightforward for users to get started with `Auto-sklearn`. For instance, the code below runs an automated classification model:
+
+[^metalearner]: For more details, see
+<https://www.automl.org/automl/auto-sklearn/>.
+
+[^chalearn]: The results are available at <https://competitions.codalab.org/competitions/2321>.
+
+\vspace{.3cm}
+
+```{python, eval = FALSE, size="footnotesize"}
+pip install autosklearn                                    # install library
+import autosklearn.classification                          # load library
+
+model = autosklearn.classification.AutoSklearnClassifier() # load model
+model.fit(X_training_data, y_training_data)                # estimate model
+predictions = model.predict(X_test_data)                   # create predictions
+```
+
+In the example, $X$ is a matrix of covariates and $y$ is a binary dependent
+variable. As it is common practice in the machine learning literature, the
+original dataset should be split into two parts, namely _training_ and _test_
+data. The training dataset consists of the observations the algorithm will use
+to estimate the model, which will later be evaluated using the test data
+partition. Researchers often include a _validation_ dataset between the two
+other splits to tune model hyperparameters.
+
+In comparison with `AutoGluon`, `Auto-sklearn` has the advantage of offering 15
+algorithms, 10 more than the former, and the new `Auto-sklearn` 2.0 also
+provides good results even under small estimation times. If practitioners need
+to quickly run a model, they can achieve a low error rate under 10 minutes
+[@askl2, 11]. Nonetheless, `Auto-sklearn` only accepts numeric data as inputs,
+so in case one would like to analyse images or text, they could only do so using
+`AutoGluon`.
+
+## H2O AutoML
+
+The third algorithm I discuss here is `H2O AutoML`. The software is a recent
+product by H2O.ai, a company based in Silicon Valley which has developed several
+machine learning solutions. `H2O AutoML` is free and open source, so firms and
+individuals can use it at no cost, and they can inspect and modify the
+original code if they want to. Another advantage of `H2O AutoML` is that it
+provides a graphic user interface to help novices to get started with the
+platform. The company offers a version of their AutoML software for `R` and
+`Python`, and the two packages use the same arguments, which makes it easy for
+users who use both languages in their work. Users only need to specify the
+dependent and independent variables, and the training and validation datasets.
+You may find a code example for binary classification problems below:
+
+\vspace{.3cm}
+
+```{python, eval = FALSE, size="footnotesize"}
+pip install h2o                                  # install library
+import h2o                                       # load library
+from h2o.automl import H2OAutoML                 # load AutoML functions
+h2o.init()                                       # start the module
+
+train = h2o.import_file("path/to/training_data") # load training data
+test = h2o.import_file("path/to/test_data")      # load test data
+
+x = train.columns                                # independent variables
+y = "dependent_variable_name"                    # dependent variable
+x.remove(y)                                      # remove dependent variable from matrix
+
+model = H2OAutoML(max_models=30, seed=1234)      # run AutoML for 30 models
+model.train(x=x, y=y, training_frame=train)      # estimate model
+predictions = model.predict(test)                # get predictions
+```
+
+
+
+
+
+
 
 
 
