@@ -270,16 +270,50 @@ information on `H2O AutoML`'s model explainability functions.
 
 The last algorithm presented in this section is `TPOT`, or _Tree-based Pipeline
 Optimization Tool_. It is one of oldest AutoML solutions for Python, and its
-authors have won several awards for their work on the algorithm.[^tpot-awards] 
+authors have won several awards for their work.[^tpot-awards] `TPOT` uses a
+genetic search algorithm to find the best model for a given dataset
+[@olson2016tpot]. The principle borrows ideas from evolutionary biology and
+consists of three steps. First, the algorithm estimates a baseline model. Then,
+it makes small random changes to the original computations. After that, it
+selects those variations that achieve a higher prediction score. The algorithm
+repeats this process until it cannot increase forecasting accuracy or after
+reaching the maximum computation time defined by the user. 
 
 [^tpot-awards]: A list of the awards is available at <http://automl.info/tpot/>.
 
+Similar to `Auto-sklearn`, `TPOT` uses existing `scikit-learn` functions to
+estimate the models, and it does so with minimal human input. `TPOT` supports
+GPU acceleration and has fast estimation times when compared to other tools.
+Users can create a classification model with the example code below:
 
+\vspace{.3cm}
 
+```{python, eval = FALSE, size="footnotesize"}
+pip install tpot                            # install library
+from tpot import TPOTClassifier             # load library
 
+model = TPOTClassifier()                    # create model
+model.fit(X_training_data, y_training_data) # fit model
+print(model.score(X_test, y_test))          # print model evaluation
+```
 
+Where $X$ is the matrix of covariates and $y$ is the response variable. `TPOT`
+has a `export` function that is useful for those who need to export the optimised model and deploy it in other settings. Users can also customise `TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s documentation is available at <http://epistasislab.github.io/tpot/> and its source code is hosted at <https://github.com/epistasislab/tpot/>.
 
+# AutoML in Practice: Replication
 
+How do AutoML models compare with expert-coded machine learning? AutoML
+algorithms have frequently appeared amongst the top performers in Kaggle
+competitions, yet they face unique challenges when tested with political or
+economic data. Datasets in these fields are often much smaller and have more
+measurement error than sales data, for instance. Therefore, data from the social
+sciences are usually hard to predict and computer algorithms may fare poorly
+when compared to experts. 
+
+Here I replicate two widely-cited papers that apply machine learning to forecast
+rare events. The first paper is "Comparing Random Forest with Logistic
+Regression for Predicting Class-Imbalanced Civil War Onset Data" by
+@muchlinski2016comparing, and 
 
 
 
