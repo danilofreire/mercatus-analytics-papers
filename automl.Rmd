@@ -30,6 +30,9 @@ if (!require("kableExtra")) {
 if (!require("reticulate")) {
     install.packages("reticulate")
 }
+if (!require("tidyverse")) {
+    install.packages("tidyverse")
+}
 
 def_chunk_hook  <- knitr::knit_hooks$get("chunk")
 knitr::knit_hooks$set(chunk = function(x, options) {
@@ -92,7 +95,7 @@ functionalities of `AutoGluon` [@erickson2020autogluon], `Auto-sklearn`
 [@feurer2015efficient], `H2O AutoML` [@ledell2020h2o], and `TPOT`
 [@olson2016tpot]. All of the algorithms are open source, actively maintained,
 and easy to use, thus suitable for both academic and business environments. In
-the third section, I replicate two articles that employ expert-coded machine
+the third section, I replicate two analyses that employ expert-coded machine
 learning models and show that AutoML can achieve comparable or better predictive
 performance with only a few lines of code. Lastly, I discuss how users can make
 their AutoML scalable and reproducible with Docker containers. Docker allows
@@ -277,7 +280,7 @@ consists of three steps. First, the algorithm estimates a baseline model. Then,
 it makes small random changes to the original computations. After that, it
 selects those variations that achieve a higher prediction score. The algorithm
 repeats this process until it cannot increase forecasting accuracy or after
-reaching the maximum computation time defined by the user. 
+reaching the maximum computation time defined by the user.
 
 [^tpot-awards]: A list of the awards is available at <http://automl.info/tpot/>.
 
@@ -298,7 +301,17 @@ print(model.score(X_test, y_test))          # print model evaluation
 ```
 
 Where $X$ is the matrix of covariates and $y$ is the response variable. `TPOT`
-has a `export` function that is useful for those who need to export the optimised model and deploy it in other settings. Users can also customise `TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s documentation is available at <http://epistasislab.github.io/tpot/> and its source code is hosted at <https://github.com/epistasislab/tpot/>.
+has a `export` function that is useful for those who need to export the
+optimised model and deploy it in other settings. Users can also customise
+`TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s
+documentation is available at <http://epistasislab.github.io/tpot/>.
+
+As we can see, the functions in these four algorithms are similar, although they
+use different optimisation methods and vary according to the type of data they
+can handle. However, all of them can quickly estimate regression or
+classification models for numeric data. Since these are the two tasks policy
+analysts generally do, the four algorithms shown above can be easily integrated
+into their workflow.
 
 # AutoML in Practice: Replication
 
@@ -308,12 +321,62 @@ competitions, yet they face unique challenges when tested with political or
 economic data. Datasets in these fields are often much smaller and have more
 measurement error than sales data, for instance. Therefore, data from the social
 sciences are usually hard to predict and computer algorithms may fare poorly
-when compared to experts. 
+when compared to experts.
 
-Here I replicate two widely-cited papers that apply machine learning to forecast
-rare events. The first paper is "Comparing Random Forest with Logistic
-Regression for Predicting Class-Imbalanced Civil War Onset Data" by
-@muchlinski2016comparing, and 
+Here I replicate two analyses that use machine learning to forecast rare events.
+@ward2010perils evaluate the out-of-sample predictive power of the models
+described in @fearon2003ethnicity and @collier2004greed, the two most
+widely-cited papers on the causes of civil war onset. The papers are suitable
+for our interest because they describe a policy issue that is not only
+important, but also notably difficult to forecast. Civil war onset is a rare
+event, and the causal relationship between variables are not well-defined in the
+literature, so there is a good chance that many predictors are correlated or
+unnecessary.
+
+In this exercise, I estimate one model per AutoML algorithm using the default
+configurations. Thus, the results below are a only a simple baseline which
+allows for modifications and extensions. The only two data processing tasks I
+did were to create a training/test dataset split and add 4 cross-validation
+folds to test the models' prediction accuracy. To save space, I do not include
+this part of the code in this paper, but the complete script is available at
+<https://github.com/danilofreire/mercatus-analytics-papers>. For
+reproducibility, I run the models with the same seed number generated at
+[random.org](http://random.org) (48924).
+
+\vspace{.3cm}
+
+```{r, echo = FALSE, cache = TRUE, size = "footnotesize"}
+setwd("~/Documents/github/mercatus-analytics-papers")
+data <- read_csv("civil-war-data.csv") %>%
+  select("warstds", "ager", "agexp", "anoc", "army85", "autch98", "auto4",
+         "autonomy", "avgnabo", "centpol3", "coldwar", "decade1", "decade2",
+         "decade3", "decade4", "dem", "dem4", "demch98", "dlang", "drel",
+         "durable", "ef", "ef2", "ehet", "elfo", "elfo2", "etdo4590",
+         "expgdp", "exrec", "fedpol3", "fuelexp", "gdpgrowth", "geo1", "geo2",
+         "geo34", "geo57", "geo69", "geo8", "illiteracy", "incumb", "infant",
+         "inst", "inst3", "life", "lmtnest", "ln_gdpen", "lpopns", "major",
+         "manuexp", "milper", "mirps0", "mirps1", "mirps2", "mirps3", "nat_war",
+         "ncontig", "nmgdp", "nmdp4_alt", "numlang", "nwstate", "oil", "p4mchg",
+         "parcomp", "parreg", "part", "partfree", "plural", "plurrel", "pol4",
+         "pol4m", "pol4sq", "polch98", "polcomp", "popdense", "presi", "pri",
+         "proxregc", "ptime", "reg", "regd4_alt", "relfrac", "seceduc",
+         "second", "semipol3", "sip2", "sxpnew", "sxpsq", "tnatwar", "trade",
+         "warhist", "xconst")
+
+
+
+```
+
+The dataset contains `r `
+
+```{python, eval = TRUE, cache = TRUE, size="footnotesize"}
+
+
+
+
+```
+
+
 
 
 
