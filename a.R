@@ -25,7 +25,7 @@ data <- read_csv("civil-war-data.csv") %>%
          warhist, xconst)
 
 # Convert dependent variable into factor
-data$warstds <- as.factor(data$warstds)
+# data$warstds <- as.factor(data$warstds)
 
 # Fearon and Laitin (2003)
 
@@ -35,31 +35,17 @@ fl_data <- data %>%
          lmtnest, ncontig, oil, nwstate, inst3,
          pol4, ef, relfrac)
 
-set.seed(48924)
-fl_train <- fl_data %>% sample_frac(.7)
-fl_test <- anti_join(fl_data, fl_train)
-fl_xtrain <- fl_train %>% select(-warstds)
-fl_ytrain <- fl_train %>% select(warstds)
-fl_xtest <- fl_test %>% select(-warstds)
-fl_ytest <- fl_test %>% select(warstds)
-
+# Independent variables, dependent variable
 fl_x <- fl_data %>% select(-warstds)
 fl_y <- fl_data %>% select(warstds)
 
-np <- import("numpy", convert = FALSE)
-fl_ytrain_py <- np$ravel(fl_ytrain)
 
-library("RemixAutoML")
-
-# m1 <- AutoXGBoostClassifier()
-
-
+### Python
 repl_python()
-
-from tpot import TPOTClassifier
 import numpy as np
-from imblearn.over_sampling import SMOTE
 import pandas as pd
+from imblearn.over_sampling import SMOTE
+from imblearn.combine import SMOTETomek
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, auc, roc_auc_score
 from collections import Counter
@@ -68,27 +54,55 @@ X_train, X_test, y_train, y_test = train_test_split(r.fl_x, r.fl_y, train_size=0
 y_train = np.ravel(y_train)
 y_test = np.ravel(y_test)
 
-oversample = SMOTE(random_state=48924)
+oversample = SMOTETomek(random_state=48924)
 X_train_SMOTE, y_train_SMOTE = oversample.fit_resample(X_train, y_train)
+Counter(y_train_SMOTE)
 
-
-tpot = TPOTClassifier(generations=4, population_size=100, cv=4, random_state=48924, verbosity=2)
-tpot.fit(X_train_SMOTE, y_train_SMOTE)
+# TPOT
+from tpot import TPOTClassifier
+tpot = TPOTClassifier(max_time_mins=10, cv=5, random_state=48924, scoring='roc_auc', verbosity=2)
+tpot.fit(X_train, y_train)
 print(tpot.score(X_test, y_test))
-
-y_predict = tpot.predict(X_test)
-y_prob = [probs[1] for probs in tpot.predict_proba(X_test)]
-
-print("Test accuracy: %s\n"%(accuracy_score(y_test, y_predict).round(2)))
 
 conf_mat = pd.DataFrame(confusion_matrix(y_test, y_predict),
                         columns=['Predicted NO', 'Predicted YES'],
                         index=['Actual NO', 'Actual YES']) 
 print(conf_mat) 
 
-# Compute area under the curve
-fpr, tpr, _ = roc_curve(y_test, y_prob)
-roc_auc = auc(fpr, tpr)
+
+# H2O
+import h2o
+from h2o.automl import H2OAutoML
+h2o.init()
+
+r.fl_data_h2o = h2o.H2OFrame(r.fl_data) 
+r.fl_data_h2o["warstds"] = r.fl_data_h2o["warstds"].asfactor()
+
+# set the predictor names and the response column name
+predictors = ["warhist", "ln_gdpen", "lpopns", "lmtnest",
+              "ncontig", "oil", "nwstate", "inst3",
+              "pol4", "ef", "relfrac"]
+response = "warstds"
+
+# split into train and validation sets
+train, test = r.fl_data_h2o.split_frame(ratios = [.75], seed = 48924)
+x = train.columns
+y = "warstds"
+x.remove(y)
+
+# run the model
+aml = H2OAutoML(max_runtime_secs=600, sort_metric="AUC", seed=48924)
+aml.train(x=x, y=y, training_frame=train)
+perf = aml.leader.model_performance(valid)
+round(perf.auc(), 4)
+aml.leader.confusion_matrix()
+preds = aml.predict(valid)
+lb = h2o.automl.get_leaderboard(aml)
+lb.head(2)
+
+# Autogluon
+import autogluon as ag
+
 
 
 exit

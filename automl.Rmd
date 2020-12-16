@@ -217,7 +217,9 @@ provides good results even under small estimation times. If practitioners need
 to quickly run a model, they can achieve a low error rate under 10 minutes
 [@askl2, 11]. Nonetheless, `Auto-sklearn` only accepts numeric data as inputs,
 so in case one would like to analyse images or text, they could only do so using
-`AutoGluon`.
+`AutoGluon`. Another limitation of `Auto-sklearn` is that it only works on
+Linux and Windows. As of December 2020, there is no support for OSX. Mac users,
+however, can use a Docker image to load the library.
 
 ## H2O AutoML
 
@@ -267,7 +269,7 @@ dependence plots [@friedman2003multiple].
 
 [^explain]: Please visit
 <http://docs.h2o.ai/h2o/latest-stable/h2o-docs/explain.html> for more
-information on `H2O AutoML`'s model explainability functions.
+information.
 
 ## TPOT
 
@@ -331,56 +333,71 @@ for our interest because they describe a policy issue that is not only
 important, but also notably difficult to forecast. Civil war onset is a rare
 event, and the causal relationship between variables are not well-defined in the
 literature, so there is a good chance that many predictors are correlated or
-unnecessary.
+unnecessary. 
 
 In this exercise, I estimate one model per AutoML algorithm using the default
-configurations. Thus, the results below are a only a simple baseline which
-allows for modifications and extensions. The only two data processing tasks I
-did were to create a training/test dataset split and add 4 cross-validation
-folds to test the models' prediction accuracy. To save space, I do not include
-this part of the code in this paper, but the complete script is available at
-<https://github.com/danilofreire/mercatus-analytics-papers>. For
-reproducibility, I run the models with the same seed number generated at
+configurations. Thus, the results below are a simple baseline which allows for
+modifications and extensions. The only data processing tasks I did were to
+create a training/test dataset split (75%/25%) prior to the estimation, as
+some libraries do not partition the data automatically, and add 5
+cross-validation folds to test the models' prediction accuracy. To save space,
+I did not include this part of the code in this paper, but the complete script
+is available at <https://github.com/danilofreire/mercatus-analytics-papers>. 
+
+Regarding the estimations, I use the area under the ROC curve as a score metric
+to make the results comparable with those by @ward2010perils. I limit the
+running time to 10 minutes per model, so users can have a good idea of how
+AutoML algorithms perform within a small time window. For reproducibility, I
+run all models with the same seed number generated at
 [random.org](http://random.org) (48924).
 
 \vspace{.3cm}
 
-```{r, echo = FALSE, cache = TRUE, size = "footnotesize"}
+```{r, echo = FALSE, error = FALSE, message = FALSE, warning = FALSE, cache = TRUE, size = "footnotesize"}
+# This code borrows from Muchlinski et al (2016)
+# See: https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/KRKWK8/S8SE0K&version=1.0
+
+# Set working directory
 setwd("~/Documents/github/mercatus-analytics-papers")
+
+# Load data and select variables
 data <- read_csv("civil-war-data.csv") %>%
-  select("warstds", "ager", "agexp", "anoc", "army85", "autch98", "auto4",
-         "autonomy", "avgnabo", "centpol3", "coldwar", "decade1", "decade2",
-         "decade3", "decade4", "dem", "dem4", "demch98", "dlang", "drel",
-         "durable", "ef", "ef2", "ehet", "elfo", "elfo2", "etdo4590",
-         "expgdp", "exrec", "fedpol3", "fuelexp", "gdpgrowth", "geo1", "geo2",
-         "geo34", "geo57", "geo69", "geo8", "illiteracy", "incumb", "infant",
-         "inst", "inst3", "life", "lmtnest", "ln_gdpen", "lpopns", "major",
-         "manuexp", "milper", "mirps0", "mirps1", "mirps2", "mirps3", "nat_war",
-         "ncontig", "nmgdp", "nmdp4_alt", "numlang", "nwstate", "oil", "p4mchg",
-         "parcomp", "parreg", "part", "partfree", "plural", "plurrel", "pol4",
-         "pol4m", "pol4sq", "polch98", "polcomp", "popdense", "presi", "pri",
-         "proxregc", "ptime", "reg", "regd4_alt", "relfrac", "seceduc",
-         "second", "semipol3", "sip2", "sxpnew", "sxpsq", "tnatwar", "trade",
-         "warhist", "xconst")
+  select(warstds, ager, agexp, anoc, army85, autch98, auto4,
+         autonomy, avgnabo, centpol3, coldwar, decade1, decade2,
+         decade3, decade4, dem, dem4, demch98, dlang, drel,
+         durable, ef, ef2, ehet, elfo, elfo2, etdo4590,
+         expgdp, exrec, fedpol3, fuelexp, gdpgrowth, geo1, geo2,
+         geo34, geo57, geo69, geo8, illiteracy, incumb, infant,
+         inst, inst3, life, lmtnest, ln_gdpen, lpopns, major,
+         manuexp, milper, mirps0, mirps1, mirps2, mirps3, nat_war,
+         ncontig, nmgdp, nmdp4_alt, numlang, nwstate, oil, p4mchg,
+         parcomp, parreg, part, partfree, plural, plurrel, pol4,
+         pol4m, pol4sq, polch98, polcomp, popdense, presi, pri,
+         proxregc, ptime, reg, regd4_alt, relfrac, seceduc,
+         second, semipol3, sip2, sxpnew, sxpsq, tnatwar, trade,
+         warhist, xconst)
 
+# Convert dependent variable into factor
+data$warstds <- as.factor(data$warstds)
 
+# Fearon and Laitin (2003)
 
+# Select variables
+fl_data <- data %>%
+  select(warstds, warhist, ln_gdpen, lpopns,
+         lmtnest, ncontig, oil, nwstate, inst3,
+         pol4, ef, relfrac)
+
+# Independent variables, dependent variable
+fl_x <- fl_data %>% select(-warstds)
+fl_y <- fl_data %>% select(warstds)
 ```
 
-The dataset contains `r `
-
-```{python, eval = TRUE, cache = TRUE, size="footnotesize"}
-
-
-
-
-```
-
-
-
-
-
-
+I begin with the civil war data collected by @fearon2003ethnicity. The data has
+`r dim(fl_data)[1]` country-year rows and `r dim(fl_data)[2]-1` potential
+predictors of civil war onset. @ward2010perils [371] test the out-of-sample
+forecasting power of the model and find an area under the ROC curve of 0.738. I
+then assess how 
 
 \newpage
 
