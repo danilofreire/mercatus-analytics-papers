@@ -42,15 +42,13 @@ fl_y <- fl_data %>% select(warstds)
 
 ### Python
 repl_python()
-import numpy as np
-import pandas as pd
 from imblearn.over_sampling import SMOTE
 from imblearn.combine import SMOTETomek
 from sklearn.model_selection import train_test_split, StratifiedKFold
 from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve, auc, roc_auc_score
 from collections import Counter
 
-X_train, X_test, y_train, y_test = train_test_split(r.fl_x, r.fl_y, train_size=0.75, test_size=0.25, stratify=r.fl_y) 
+X_train, X_test, y_train, y_test = train_test_split(r.fl_x, r.fl_y, train_size=0.75, test_size=0.25, stratify=r.fl_y, random_state = 48924) 
 y_train = np.ravel(y_train)
 y_test = np.ravel(y_test)
 
@@ -102,7 +100,11 @@ lb.head(2)
 
 # Autogluon
 import autogluon as ag
+from autogluon import TabularPrediction as task
 
+train, test = train_test_split(r.fl_data, train_size=0.75, test_size=0.25, random_state = 48924) 
+train.head()
 
+predictor = task.fit(train_data=train, label='warstds', time_limits=60) 
 
 exit
