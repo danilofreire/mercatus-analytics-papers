@@ -396,8 +396,18 @@ fl_y <- fl_data %>% select(warstds)
 I begin with the civil war data collected by @fearon2003ethnicity. The data has
 `r dim(fl_data)[1]` country-year rows and `r dim(fl_data)[2]-1` potential
 predictors of civil war onset. @ward2010perils [371] test the out-of-sample
-forecasting power of the model and find an area under the ROC curve of 0.738. I
-then assess how 
+forecasting power of the model and find an area under the ROC curve of 0.738.
+The authors also assess the forecasting ability of Collier and Hoeffler's
+[-@collier2004greed] main model and show that the area under the ROC curve in
+this second estimation is 0.823. These are the two benchmarks of the AutoML
+models. The code and results follow below.
+
+# Sharing AutoML Models with Docker 
+
+
+
+
+
 
 \newpage
 
