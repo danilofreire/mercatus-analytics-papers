@@ -42,6 +42,8 @@ fl_y <- fl_data %>% select(warstds)
 
 ### Python
 repl_python()
+import numpy as np
+import pandas as pd
 from imblearn.over_sampling import SMOTE
 from imblearn.combine import SMOTETomek
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -106,5 +108,21 @@ train, test = train_test_split(r.fl_data, train_size=0.75, test_size=0.25, rando
 train.head()
 
 predictor = task.fit(train_data=train, label='warstds', time_limits=60) 
+
+# Hyperopt
+from hpsklearn import HyperoptEstimator, any_classifier, any_preprocessing
+from hyperopt import tpe
+
+estim = HyperoptEstimator(classifier=any_classifier('my_clf'),
+                          preprocessing=any_preprocessing('my_pre'),
+                          algo=tpe.suggest,
+                          max_evals=100,
+                          trial_timeout=120)
+
+estim.fit(X_train, y_train)
+print(estim.score(X_test, y_test))
+
+
+
 
 exit

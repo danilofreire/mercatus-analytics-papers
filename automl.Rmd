@@ -89,22 +89,21 @@ true democratisation of artificial intelligence [@hutter2019automated, ix;
 prediction challenges, and they consistently reach the top 5% in public machine
 learning competitions [@autogluon2020kaggle; @googleblog2020automl].
 
-In this paper, I introduce four Python AutoML algorithms that policy analysts
+In this paper, I introduce three Python AutoML algorithms that policy analysts
 may consider in their work. In the first section, I describe the main
-functionalities of `AutoGluon` [@erickson2020autogluon], `Auto-sklearn`
-[@feurer2015efficient], `H2O AutoML` [@ledell2020h2o], and `TPOT`
-[@olson2016tpot]. All of the algorithms are open source, actively maintained,
-and easy to use, thus suitable for both academic and business environments. In
-the third section, I replicate two analyses that employ expert-coded machine
-learning models and show that AutoML can achieve comparable or better predictive
-performance with only a few lines of code. Lastly, I discuss how users can make
-their AutoML scalable and reproducible with Docker containers. Docker allows
-researchers to create an image of their complete working environment, thus all
-AutoML specifications and dependencies are automatically embedded in the Docker
-file. While Docker has been widely employed in business applications, its use in
-academia remains limited. I provide a simple tutorial so that readers can upload
-their AutoML setups to a website and share their Docker containers with
-co-authors and referees.
+functionalities of `H2O AutoML` [@ledell2020h2o], `mljar-supervised`
+[@mljar2020], and `TPOT` [@olson2016tpot]. All of the algorithms are open
+source, actively maintained, and easy to use, thus suitable for both academic
+and business environments. In the third section, I replicate two analyses that
+employ expert-coded machine learning models and show that AutoML can achieve
+comparable or better predictive performance with only a few lines of code.
+Lastly, I discuss how users can make their AutoML scalable and reproducible
+with Docker containers. Docker allows researchers to create an image of their
+complete working environment, thus all AutoML specifications and dependencies
+are automatically embedded in the Docker file. While Docker has been widely
+employed in business applications, its use in academia remains limited. I
+provide a simple tutorial so that readers can upload their AutoML setups to a
+website and share their Docker containers with co-authors and referees.
 
 # A Brief Introduction to AutoML Algorithms
 
@@ -140,105 +139,26 @@ correlated to avoid multicollinearity [@he2020automl; @truong2019towards].
 AutoML takes a data-driven approach here too, and selects those data
 transformations that contribute the most to improving forecasting scores.
 
-## AutoGluon
-
-`AutoGluon` is an automated machine learning framework developed by Amazon Web
-Service Labs. It allows users to ensemble multiple models and stack them into
-many layers, which often increases forecasting accuracy. `AutoGluon` is under
-active development and its code is available at
-<https://github.com/awslabs/autogluon>. The Python library is also easy to
-install and deploy, and researchers can create powerful deep learning or
-tree-based models with just three lines of code [@erickson2020autogluon, 1].
-Indeed, non-experts only need to know three functions to get started with the
-library, namely `Dataset()`, `fit()`, and `predict()`. The basic model pipeline
-looks like this:
-
-\vspace{.3cm}
-
-```{python, eval = FALSE, size="footnotesize"}
-pip install autogluon                                      # install library
-import autogluon as ag                                     # load library
-from autogluon import TabularPrediction as task            # import module
-
-data = task.Dataset("path/to/dataset")                     # load data
-model = task.fit(data_train, label=dependent_variable)     # fit model
-predictions = model.predict(new_data)                      # predict
-```
-
-Experienced machine learning practitioners may also adapt the `fit()` function
-to their needs and choose amongst different learners and change hyperparameter
-settings. However, the default configurations probably suit most users.
-Moreover, `AutoGluon` can distribute the calculations across multiple computers,
-which is handy if you have access to Google Cloud or Amazon EC2.
-
-## Auto-sklearn
-
-`Auto-sklearn` is an AutoML library built on top of `scikit-learn` [@scikit],
-one of the most popular machine learning modules for Python. Developed by a
-research team from the University of Freiburg and the University of Hannover,
-`Auto-sklearn` uses a meta-learning method that compares similar datasets and
-identify which algorithm is most adequate for that particular prediction tests.
-According to the authors, this procedure improves the library performance and
-speeds up processing times.[^metalearner] `Auto-sklearn` has proved successful
-in machine learning competitions, too. In 2016, the algorithm won six out of ten
-tracks of the ChaLearn Automatic Machine Learning Challenge[^chalearn], that
-evaluated the accuracy of AutoML models estimated without any human
-intervention. It is straightforward for users to get started with
-`Auto-sklearn`. For instance, the code below runs an automated classification
-model:
-
-[^metalearner]: For more details, see
-<https://www.automl.org/automl/auto-sklearn/>.
-
-[^chalearn]: The results are available at <https://competitions.codalab.org/competitions/2321>.
-
-\vspace{.3cm}
-
-```{python, eval = FALSE, size="footnotesize"}
-pip install autosklearn                                    # install library
-import autosklearn.classification                          # load library
-
-model = autosklearn.classification.AutoSklearnClassifier() # load model
-model.fit(X_training_data, y_training_data)                # estimate model
-predictions = model.predict(X_test_data)                   # create predictions
-```
-
-In the example, $X$ is a matrix of covariates and $y$ is a binary dependent
-variable. As it is common practice in the machine learning literature, the
-original dataset should be split into two parts, namely _training_ and _test_
-data. The training dataset consists of the observations the algorithm will use
-to estimate the model, which will later be evaluated using the test data
-partition. Researchers often include a _validation_ dataset between the two
-other splits to tune model hyperparameters.
-
-In comparison with `AutoGluon`, `Auto-sklearn` has the advantage of offering 15
-algorithms, 10 more than the former, and the new `Auto-sklearn` 2.0 also
-provides good results even under small estimation times. If practitioners need
-to quickly run a model, they can achieve a low error rate under 10 minutes
-[@askl2, 11]. Nonetheless, `Auto-sklearn` only accepts numeric data as inputs,
-so in case one would like to analyse images or text, they could only do so using
-`AutoGluon`. Another limitation of `Auto-sklearn` is that it only works on
-Linux and Windows. As of December 2020, there is no support for OSX. Mac users,
-however, can use a Docker image to load the library.
-
 ## H2O AutoML
 
-The third algorithm I discuss here is `H2O AutoML`. The software is a recent
-product by H2O.ai, a company based in Silicon Valley which has developed several
-machine learning solutions. `H2O AutoML` is free and open source, so firms and
-individuals can use it at no cost, and they can inspect and modify the
-original code if they want to. Another advantage of `H2O AutoML` is that it
-provides a graphic user interface to help novices to get started with the
-platform. The company offers a version of their AutoML software for `R` and
-`Python`, and the two packages use the same arguments, which makes it easy for
-users who use both languages in their work. Users only need to specify the
-dependent and independent variables, and the training and validation datasets.
-You may find a code example for binary classification problems below:
+The first algorithm I present is `H2O AutoML`. Developed by H2O.ai, a company
+based in Silicon Valley, `H2OAutoML` is a free and open source automated
+machine learning solution. Thus, individuals and firms can use it at no cost,
+and they can also inspect and modify the original code if they want to. Another
+advantage of `H2O AutoML` is that it provides a graphic interface that helps
+beginners to get started with the platform. H2O.ai offers a version of their
+AutoML software for `R` and `Python`, and the two packages use the same
+arguments. In this respect, `AutoML` is recommended for those who use both
+languages in their work as the libraries are interchangeable. Users only need
+to specify the dependent and independent variables, the training and validation
+datasets, and the prediction task they want to run. The algorithm will then
+find the best model to fit the training data, evaluate the model performance on
+the test dataset, and report model statistics. Example code for binary
+classification tasks in Python follow below:
 
 \vspace{.3cm}
 
 ```{python, eval = FALSE, size="footnotesize"}
-pip install h2o                                  # install library
 import h2o                                       # load library
 from h2o.automl import H2OAutoML                 # load AutoML functions
 h2o.init()                                       # start the module
@@ -255,25 +175,58 @@ model.train(x=x, y=y, training_frame=train)      # estimate model
 predictions = model.predict(test)                # get predictions
 ```
 
-One feature that sets `H2O AutoML` apart from the other packages shown here is
-its large collection of model explainability functions. Critics have pointed out
-that most machine learning methods are "black boxes", in the sense that they
-display little information about how the estimation is made
-[@molnar2020interpretable]. This has serious consequences in fields where
-decision mechanisms are relevant per se, like judicial sentences or health care
-allocation. `H2O AutoML` addresses this issue by offering explanation functions
-that shows how the model perform as a whole and how it explains each individual
-observation.[^explain] The algorithm also shows the importance of every
-predictor [@gromping2009variable], SHAP values [@lundberg2020local], and partial
-dependence plots [@friedman2003multiple].
+`H2O AutoML` also provides a large collection of model explainability
+functions. Critics have pointed out that most machine learning methods are
+"black boxes", in the sense that they display little information about how the
+estimation is made [@molnar2020interpretable]. This has serious consequences in
+fields where decision mechanisms are relevant per se, like judicial sentences
+or health care allocation. `H2O AutoML` addresses this issue by offering
+explanation functions that shows how the model perform as a whole and how it
+explains each individual observation.[^explain] The algorithm also shows the
+importance of every predictor [@gromping2009variable], SHAP values
+[@lundberg2020local], and partial dependence plots [@friedman2003multiple].
 
 [^explain]: Please visit
 <http://docs.h2o.ai/h2o/latest-stable/h2o-docs/explain.html> for more
 information.
 
+## mljar-supervised
+
+`mljar-supervised` is a new algorithm for Python that builds AutoML models for
+tabular data. The algorithm is very simple to use, and it chooses the best
+model from several machine learning methods, including neural networks. Like
+`H2OAutoML`, it also offers many tools for model explanation and describes the
+complete machine learning pipeline in detail. It even creates a Markdown file
+with graphs and results that users can share or post on a website.
+
+The software is also able to do some pre-processing tasks such as imputing
+missing values or converting categorical predictors into dummy variables.
+Moreover, experienced users may pass their own parameters to the model they
+want to estimate and stack algorithms together in an ensemble to increase their
+prediction accuracy. One can estimate a classification model with
+`mljar-supervised` with the following code:
+
+\vspace{.3cm}
+
+```{python, eval = FALSE, size="footnotesize"}
+from supervised.automl import AutoML        # load the library
+
+model = AutoML()                            # load the model
+model.fit(X_training_data, y_training_data) # estimate models using training data
+predictions = model.predict(X_test)         # compare predictions with test data
+```
+
+To load the model explainability functions included in the package, just pass
+`AutoML(mode="Explain")` to the algorithm and it will show the  learning
+curves, variable importance plots, and SHAP plots. Researchers interested in
+employing `mljar-supervised` in machine learning competitions may find the
+`AutoML(mode="Compete")` function particularly useful. It not only splits the
+data into 10 cross-validation folds, but also automatically builds machine
+learning ensembles. 
+
 ## TPOT
 
-The last algorithm presented in this section is `TPOT`, or _Tree-based Pipeline
+The last algorithm I discuss here is `TPOT`, or _Tree-based Pipeline
 Optimization Tool_. It is one of oldest AutoML solutions for Python, and its
 authors have won several awards for their work.[^tpot-awards] `TPOT` uses a
 genetic search algorithm to find the best model for a given dataset
@@ -286,7 +239,7 @@ reaching the maximum computation time defined by the user.
 
 [^tpot-awards]: A list of the awards is available at <http://automl.info/tpot/>.
 
-Similar to `Auto-sklearn`, `TPOT` uses existing `scikit-learn` functions to
+Similar to `mljar-supervised`, `TPOT` uses existing `scikit-learn` functions to
 estimate the models, and it does so with minimal human input. `TPOT` supports
 GPU acceleration and has fast estimation times when compared to other tools.
 Users can create a classification model with the example code below:
@@ -294,7 +247,6 @@ Users can create a classification model with the example code below:
 \vspace{.3cm}
 
 ```{python, eval = FALSE, size="footnotesize"}
-pip install tpot                            # install library
 from tpot import TPOTClassifier             # load library
 
 model = TPOTClassifier()                    # create model
@@ -308,12 +260,12 @@ optimised model and deploy it in other settings. Users can also customise
 `TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s
 documentation is available at <http://epistasislab.github.io/tpot/>.
 
-As we can see, the functions in these four algorithms are similar, although they
-use different optimisation methods and vary according to the type of data they
-can handle. However, all of them can quickly estimate regression or
-classification models for numeric data. Since these are the two tasks policy
-analysts generally do, the four algorithms shown above can be easily integrated
-into their workflow.
+As we can see, the code used by the three algorithms is almost identical,
+although they use different optimisation methods and vary according to the type
+of data they can handle. However, all of them can quickly estimate regression
+or classification models for numeric data. Since these are the two tasks policy
+analysts most often do, the three algorithms shown above can be easily integrated
+into their machine learning workflow.
 
 # AutoML in Practice: Replication
 
@@ -404,7 +356,170 @@ models. The code and results follow below.
 
 # Sharing AutoML Models with Docker 
 
+Now that you have your AutoML models ready, how to deploy or share them? My
+suggestion is to use [Docker](https://www.docker.com/) as a reproducibility
+tool.[^docker] Docker is a virtualisation platform that allows users to build,
+test, and share their software in standardised packages called containers. Each
+container has a lightweight version of an operating system, usually Linux, and
+users can add any other software or folders to the Docker image. Instead of
+sharing just data and code, as it is common practice in the social sciences,
+scholars can distribute their complete software environment to collaborators
+and reviewers. Thus, Docker guarantees that all computer libraries are
+identical to the ones in the original analysis, what assures complete
+reproducibility and easy deployment to other machines.
 
+[^docker]: Please find the Docker documentation files at <https://docs.docker.com>.
+
+Docker is available for all major operating systems and requires only a few
+commands to work. In this section, I show how researchers can create a custom
+Docker container within minutes. First, download Docker Desktop at
+<https://www.docker.com/products/docker-desktop> and install it. Docker Desktop
+includes all necessary files to build and run Docker containers. Second, create
+a free account at DockerHub (<https://hub.docker.com/signup>), which is a
+cloud-based repository for Docker images. After that, we are ready to use
+Docker.
+
+Now we are going to build our custom image. We can create a Docker container in
+two ways, either by writing a `Dockerfile`, a configuration file with
+instructions on which packages to download and run in the Docker image, or by
+modifying an existing Docker container. I recommend the second method as it
+requires less coding. 
+
+We start by pulling and running a pre-built Ubuntu Linux image. Docker will
+start a Ubuntu session without changing any configuration in your computer.
+To install the container, run the following code on your terminal:
+
+\vspace{.3cm}
+
+```{bash, eval=F, size="footnotesize", warning=F, error=F}
+docker pull ubuntu    # download the image from DockerHub
+docker run -it ubuntu # run the image; -it connects the computer to the Docker
+containter
+```
+
+You will see a root session in your terminal:
+
+```{r, echo=FALSE, fig.cap="Docker container running Ubuntu Linux.", out.width = "80%", fig.align="center"}
+knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/docker-ubuntu.png")
+```
+
+We then install Python, R, and the AutoML libraries.
+
+\vspace{.3cm}
+
+```{bash, eval=F, size="footnotesize", warning=F, error=F}
+apt update -y                                      # update the system
+apt install python3 python3-pip r-base default-jre # required files
+pip3 install h2o                                   # H2O AutoML
+pip3 install mljar-supervised                      # mljar-supervised
+pip3 install tpot                                  # TPOT
+```
+
+The `pip3` command installs the Python libraries and their dependencies, so we
+have all the software we need to estimate our models. The next step is to
+include the data and scripts. To do so, we close the connection with the
+container with `exit` and find the container ID with `docker ps -a`, which list all
+active Docker containers. Then we copy the files with the  `docker cp` command.
+
+\vspace{.3cm}
+
+```{bash, eval=F, size="footnotesize", warning=F, error=F}
+# In the Docker container:
+exit         # close the connection
+
+# In your regular terminal:
+docker ps -a # list all available containers
+```
+
+After you exit the Docker image and type `docker ps -a`, you will see something
+like:
+
+```{r, echo=FALSE, fig.cap="List of available Docker containers.", out.width = "80%", fig.align="center"}
+knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/docker-ps.png")
+```
+
+Where the first column indicates the container ID. In this case, it starts with
+`5051`. To copy the files to that specific container, just write the following
+lines in your terminal:
+
+\vspace{.3cm}
+
+```{bash, eval=F, size="footnotesize", warning=F, error=F}
+docker cp ~/path/to/file/automl.R 5051:/automl.R                     # copy script
+docker cp ~/path/to/file/civil-war-data.csv 5051:/civil-war-data.csv # copy data
+```
+
+Lastly, we need to save the changes we have made to the container and upload it
+to DockerHub. We use `docker commit [container_ID] [new_name]` to commit the
+changes, where `[container_ID]` is ID value we found above (`5051`) and
+`[new_name]` is the name we want to give to the modified container. Check if
+the container has been saved with `docker image`.
+
+\vspace{.3cm}
+
+```{bash, eval=F, size="footnotesize", warning=F, error=F}
+docker commit 5051 mercatus-automl
+docker images
+```
+
+This is the terminal output:
+
+```{r, echo=FALSE, fig.cap="Docker images.", out.width = "80%", fig.align="center"}
+knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/docker-images.png")
+```
+
+Now we need to push the image to DockerHub. Go to
+<https://hub.docker.com/repositories> and create a new repository. Then, add
+your DockerHub credentials to your local machine with `docker login
+--username=your_username` and create a tag for your container. Finally, type
+`docker push your_username/repository_name` to push your image to DockerHub.
+Example code:
+
+\vspace{.3cm}
+
+```{bash, eval=F, size="footnotesize", warning=F, error=F}
+docker login --username=danilofreire               # add credentials
+Password:                                          # type your password
+
+docker tag 602d danilofreire/mercatus-automl:first # add tag
+docker push danilofreire/mercatus-automl:first     # push image to DockerHub
+```
+
+```{r, echo=FALSE, fig.cap="Container uploaded to DockerHub.", out.width = "80%", fig.align="center"}
+knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/dockerhub.png")
+```
+And that completes our tutorial. The image has been successfully uploaded to
+DockerHub, and researchers can download the file, along with the source script
+and data, with `docker pull danilofreire/mercatus-automl`. As we have seen,
+Docker offers a flexible, fully reproducible method to share machine learning
+models or other statistical analyses. It goes beyond current academic
+reproducibility practices and ensures the exact replication of the findings.
+
+# Conclusion
+
+Computer scientists have applied machine learning to predict a myriad of
+outcomes, from shopping habits to real-time object recognition. Algorithms now
+power email filters, automated translation software, satellite farming,
+self-driving cars, and many other applications. In the past years, social
+scientists have also adopted machine learning tools to forecast political
+events and improve public policies. AutoML is a new class of algorithms that
+can facilitate machine learning tasks and allows non-experts to use
+sophisticated computer estimations in their work with few lines of code. Here I
+have provided a simple introduction to three Python AutoML libraries and show
+that their prediction accuracy is on par with those achieved by area experts.
+Moreover, I suggest that users should adopt Docker to share their machine
+learning models and have fully reproducible pipelines.
+
+AutoML is a dynamic field that is still in its infancy. The growing support
+from big technology firms such as Google, Amazon, and Microsoft indicates that
+we should expect a large number of new algorithms and applications in the near
+future. Fortunately, most AutoML tools remain free to use, so individuals are
+likely to benefit from these advances. While non-experts can use AutoML tools
+to produce good estimates in a short period of time, experienced practitioners
+are able to automate labour-intensive tasks and focus on improving the
+predictive ability of their models. In sum, I hope AutoML becomes an important
+part of the research methods toolkit, and that automated models help policy
+analysts to answer some of their most pressing questions.
 
 
 
