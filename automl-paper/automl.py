@@ -34,7 +34,7 @@ y = "onset"
 x.remove(y)
 
 # Run the model
-aml = H2OAutoML(max_runtime_secs=900, sort_metric="AUC", seed=48924)
+aml = H2OAutoML(max_runtime_secs=3600, sort_metric="AUC", seed=48924)
 aml.train(x=x, y=y, training_frame=train)
 aml.leader.confusion_matrix()
 perf = aml.leader.model_performance(test)
@@ -42,7 +42,7 @@ round(perf.auc(), 3)
 
 ## mljar-supervised
 from supervised.automl import AutoML
-automl = AutoML(mode="Compete", golden_features=False, total_time_limit=900, random_state=48924)
+automl = AutoML(mode="Compete", golden_features=False, total_time_limit=3600, random_state=48924)
 automl.fit(X_train, y_train)
 
 y_pred_prob = automl.predict_proba(X_test)
@@ -52,7 +52,7 @@ predictions = automl.predict(X_test)
 print(predictions.head())
 
 ## TPOT
-from tpot import TPO?!?jedi=0, TClassifier?!? (generations=100, population_size=100, offspring_size=None, mutation_rate=0.9, crossover_rate=0.1, scoring=None, cv=5, subsample=1.0, n_jobs=1, *_*max_time_mins=None*_*, max_eval_time_mins=5, random_state=None, config_dict=None, template=None, warm_start=False, memory=None, use_dask=False, periodic_checkpoint_folder=None, early_stop=None, verbosity=0, disable_update_check=False, log_file=None) ?!?jedi?!?
-tpot = TPOTClassifier(max_time_mins=30, cv=5, random_state=48924, scoring='roc_auc', verbosity=2)
+from tpot import TPOTClassifier
+tpot = TPOTClassifier(max_time_mins=60, cv=5, random_state=48924, scoring='roc_auc', verbosity=2)
 tpot.fit(X_train, y_train)
-print(tpot.score(X_test, y_test))
+print(round(tpot.score(X_test, y_test), 3))

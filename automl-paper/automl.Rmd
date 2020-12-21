@@ -52,10 +52,10 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 # Introduction
 
 Machine learning has made steady inroads into the social sciences. Although
-causal inference designs are the standard methodology in economics and
+causal inference designs have become the standard methodology in economics and
 political science [@angrist2008mostly], machine learning models are
 increasingly used to tackle "prediction policy problems", in which high
-forecasting accuracy is more important that unbiased regression coefficients
+forecasting accuracy is more important than unbiased regression coefficients
 [@kleinberg2015prediction]. For instance, scholars have employed algorithmic
 modelling to predict civil wars [@muchlinski2016comparing; @ward2010perils],
 mass killings [@freire2018drives; @ulfelder2013multimodel], and state
@@ -66,15 +66,15 @@ Therefore, computer algorithms can improve social welfare by making state
 interventions more effective and personalised.
 
 Despite the popularity of predictive analytics, building machine learning
-models remains a labour-intensive task. Practitioners often apply several
-preprocessing steps just to make their data suitable for analysis, and
-modelling decisions such as algorithm selection and parameter optimisation are
-still largely based on trial and error [@elshawi2019automated]. As a result,
-many areas that could benefit from predictive algorithms do not reach their
-full potential due to implementation challenges or lack of technical expertise
-[@amershi2019software; @truong2019towards; @yang2018grounding]. In this regard,
-methods that simplify the machine learning pipeline can have significant
-academic and policy impacts [@ahmed2020framework; @healy2017bridging].
+models remains a labour-intensive task. Practitioners apply several
+preprocessing steps just to prepare their data, and modelling decisions, such
+as algorithm selection and parameter optimisation, are still largely based on
+trial and error [@elshawi2019automated]. As a result, many areas that could
+benefit from predictive algorithms do not reach their full potential due to
+implementation challenges or lack of technical expertise [@amershi2019software;
+@truong2019towards; @yang2018grounding]. In this regard, methods that simplify
+the machine learning pipeline can have significant academic and policy impacts
+[@ahmed2020framework; @healy2017bridging].
 
 Automated machine learning (AutoML) aims to fill this gap. AutoML is an
 emerging framework that automatically chooses and optimises machine learning
@@ -82,7 +82,7 @@ algorithms. More specifically, AutoML provides data-driven tools to minimise
 human effort in the machine learning workflow, automating steps like feature
 engineering, model selection, hyperparameter tuning, and model interpretation
 [@elshawi2019automated]. AutoML not only frees machine learning specialists
-from tedious and error-prone tasks, but also makes state-of-the-art algorithms
+from tedious and error-prone tasks, but makes state-of-the-art algorithms
 accessible to regular users. According to their proponents, AutoML promotes a
 true democratisation of artificial intelligence [@hutter2019automated, ix;
 @shang2019democratizing]. AutoML approaches have also been very successful in
@@ -91,7 +91,7 @@ learning competitions [@autogluon2020kaggle; @googleblog2020automl].
 
 In this paper, I introduce three Python AutoML algorithms that policy analysts
 may consider in their work. In the following section, I describe the main
-functionalities of `H2O AutoML` [@ledell2020h2o], `mljar-supervised`
+functionalities of `H2O AutoML` [@h2o2017automl], `mljar-supervised`
 [@mljar2020], and `TPOT` [@olson2016tpot]. All of the algorithms are open
 source, actively maintained, and easy to use. Then, I replicate two analyses
 that employ expert-coded machine learning models and show that AutoML can
@@ -114,25 +114,23 @@ automated solutions often outperform baseline models. Since then, the
 literature has grown significantly. Today, there is a multitude of AutoML
 algorithms available for non-expert users, which are not only able to predict
 numeric data, but also to classify objects, translate text, annotate videos,
-and perform sentiment analysis in social media with little coding experience
+and perform sentiment analysis in social media with few instructions
 [@liu2020far].
 
 The intuition behind AutoML algorithms is simple. First, the algorithm splits
 the original data into training and test datasets and applies different models
-to them in each iteration. Then the algorithm selects the model which achieves
+to the training partition. Then the algorithm selects the model which achieves
 the best performance in a given evaluation metric, such as the mean squared
-error or classification accuracy. AutoML can find the most suitable machine
-learning method by testing every model separately or by combining a diverse set
-of models and applying optimisation techniques to speed up the process. Having
-selected the algorithm that minimises the chosen metric, the next step is to
-find the set of hyperparameters that further improves the model's predictive
-ability. The selection method here is the same. The algorithm tests many
-combinations of parameters and chooses the one that produces the best results
-according to the estimation metric. There are several ways to map the parameter
-space and reach an optimal solution, but these are the main principles that
-guide every AutoML algorithm.
+error or classification accuracy. Having selected the algorithm that minimises
+the chosen metric, the next step is to find the set of hyperparameters that
+further improves the model's predictive ability. The selection method here is
+the same. The algorithm tests many combinations of parameters and chooses the
+one that produces the best results according to the estimation metric. Finally,
+the results are compared against the test dataset to see how the model performs
+with new data. If necessary, users can add their own configurations or repeat
+that workflow with other data splits. 
 
-Most AutoML libraries also perform feature engineering tasks without human
+Many AutoML libraries also perform feature engineering tasks without human
 intervention. Feature engineering is the process of recoding variables to
 improve the performance of machine learning algorithms. Common tasks include
 creating dummy variables from categorical indicators, filling missing data,
@@ -143,21 +141,19 @@ improve forecasting scores the most.
 
 ## H2O AutoML
 
-The first algorithm I present here is `H2O AutoML`. Developed by H2O.ai, a
-company based in Silicon Valley, `H2OAutoML` is a free and open source
-automated machine learning solution. Thus, individuals and firms can use it at
-no cost, and they can also inspect and modify the original code if they want
-to. Another advantage of `H2O AutoML` is that it provides a graphic interface
-that helps beginners to get started with the platform. H2O.ai offers a version
-of their AutoML software for `R` and `Python`, and the two packages use the
-same functions and arguments. In this respect, `AutoML` is recommended for
-those who use both languages in their work as the libraries are
-interchangeable. Users only need to specify the dependent and independent
-variables, the training and validation datasets, and the prediction task they
-want to run. The algorithm will then find the best model to fit the training
-data, evaluate the model performance on the test dataset, and report model
-statistics. Example code for binary classification tasks in Python follow
-below:
+The first algorithm I discuss is `H2O AutoML`. Developed by H2O.ai, a company
+based in Silicon Valley, `H2OAutoML` is a free and open source automated
+machine learning solution. Thus, individuals and firms can use it at no cost,
+and they can also inspect and modify the original code if they want to. Another
+advantage of `H2O AutoML` is that it provides a graphic interface that helps
+beginners to get started with the platform. H2O.ai offers their AutoML software
+for both `R` and `Python`, and the packages use the same functions and
+arguments in the two languages. Users only need to specify the dependent and
+independent variables, the training and test datasets, and the prediction task
+they want to run. The algorithm will automatically find the model that best
+fits the training data, evaluate its performance on the test dataset, and
+report model statistics. Example code for binary classification tasks in Python
+follow below:
 
 \vspace{.3cm}
 
@@ -186,29 +182,28 @@ fields where decision mechanisms are relevant _per se_, like judicial sentences
 or health care allocation. `H2O AutoML` addresses this issue by offering
 explanation methods that describe how the general model performs and how it
 explains each individual observation.[^explain] The algorithm also shows the
-importance of every predictor [@gromping2009variable], SHAP values
+forecasting importance of every predictor [@gromping2009variable], SHAP values
 [@lundberg2020local], and partial dependence plots [@friedman2003multiple].
 
 [^explain]: Please visit
 <http://docs.h2o.ai/h2o/latest-stable/h2o-docs/explain.html> for more
-information.
+information on `H2OAutoML`'s model explainability functions.
 
 ## mljar-supervised
 
-`mljar-supervised` is a new algorithm for Python that builds AutoML models for
-tabular data. The algorithm perhaps the easiest to use from the three I present
-here, and it features a list of several machine learning methods, including
-neural networks. Like `H2OAutoML`, `mljar-supervised` offers many tools for
-model explanation and describes the complete machine learning pipeline in
-detail. It even creates a Markdown file with graphs and results that users can
-share or post on a website.
+`mljar-supervised` is a new algorithm that builds AutoML models for tabular
+data. It includes many cutting-edge machine learning tools, like neural
+networks, and is able to combine these methods to increase prediction
+performance. Like `H2OAutoML`, `mljar-supervised` offers many model explanation
+functions and it describes the complete machine learning pipeline.
+`mljar-supervised` even creates a Markdown file with graphs and results that
+users can share or post on a website.
 
-The software is also able to do some pre-processing tasks such as imputing
-missing values or converting categorical predictors into dummy variables.
-Moreover, experienced users may pass their own parameters to the model they
-want to estimate and stack algorithms together in an ensemble to increase their
-prediction accuracy. One can estimate a classification model with
-`mljar-supervised` with the following code:
+The software can also do some pre-processing tasks, such as imputing missing
+values or converting categorical predictors into dummy variables. Moreover,
+experienced users may pass their own parameters to the model they want to
+estimate and stack algorithms together according to their preferences. One can
+run a classification model with the following code:
 
 \vspace{.3cm}
 
@@ -225,21 +220,21 @@ To load the model explainability functions included in the package, just pass
 curves, variable importance plots, and SHAP plots. Researchers interested in
 employing `mljar-supervised` in machine learning competitions may find the
 `AutoML(mode="Compete")` function particularly useful. It not only splits the
-data into 10 cross-validation folds, but also automatically builds machine
-learning ensembles. 
+data into 10 cross-validation folds, but also builds machine
+learning ensembles automatically. 
 
 ## TPOT
 
-The last algorithm I discuss here is `TPOT`, or _Tree-based Pipeline
+The last algorithm I present here is `TPOT`, or _Tree-based Pipeline
 Optimization Tool_. It is one of oldest AutoML solutions for Python, and its
 authors have won several awards for their work.[^tpot-awards] `TPOT` uses a
 genetic search algorithm to find the best model for a given dataset
 [@olson2016tpot]. The principle borrows ideas from evolutionary biology and
 consists of three steps. First, the algorithm estimates a baseline model. Then,
 it makes small random changes to the original computations. After that, it
-selects those variations that achieve a higher prediction score. The algorithm
-repeats this process until it cannot increase forecasting accuracy or after
-reaching the maximum computation time defined by the user.
+selects those variations that achieve high prediction scores. `TPOT` repeats
+this process until it cannot increase forecasting accuracy or after reaching
+the maximum computation time defined by the user.
 
 [^tpot-awards]: A list of the awards is available at <http://automl.info/tpot/>.
 
@@ -264,12 +259,12 @@ optimised model and deploy it in other settings. Users can also customise
 `TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s
 documentation is available at <http://epistasislab.github.io/tpot/>.
 
-As we can see, the code used by the three algorithms is almost identical,
-although they use different optimisation methods and vary according to the type
-of data they can handle. However, all of them can quickly estimate regression
-or classification models for numeric data. Since these are the two tasks policy
-analysts most often do, the three algorithms shown above can be easily integrated
-into their machine learning workflow.
+As we can see, the code shown in the three examples is almost identical,
+although the functions are running different processes in the background.
+However, `H2OAutoML`, `mljar-supervised`, and `TPOT` can all quickly estimate
+regression or classification models for numeric data. Since these are the two
+tasks policy analysts most often do, the three algorithms presented above can
+be easily integrated into their machine learning workflow.
 
 # AutoML in Practice: Replication
 
@@ -302,7 +297,7 @@ available at <https://github.com/danilofreire/mercatus-analytics-papers>.
 
 Regarding the estimations, I use the area under the ROC curve as a score metric
 to make the results comparable with those by @ward2010perils. I limit the
-running time to 15 minutes per model, so users can have a good idea of how
+running time to 60 minutes per model, so users can have a good idea of how
 AutoML algorithms perform within a small time window. For reproducibility, I
 run all models with the same seed number generated at
 [random.org](http://random.org) (48924).
@@ -375,9 +370,6 @@ ch_test <- anti_join(ch_data, ch_train)
 # write_csv(ch_train, "ch_train.csv")
 # write_csv(ch_test, "ch_test.csv")
 # write_csv(ch_data, "ch_data.csv")
-
-# TPOT: 0.762
-# h2o: 0.715
 ```
 
 I begin with the civil war data collected by @fearon2003ethnicity. The data has
@@ -432,7 +424,7 @@ y = "onset"
 x.remove(y)
 
 # Run the model
-aml = H2OAutoML(max_runtime_secs=900, sort_metric="AUC", seed=48924)
+aml = H2OAutoML(max_runtime_secs=3600, sort_metric="AUC", seed=48924)
 aml.train(x=x, y=y, training_frame=train)
 aml.leader.confusion_matrix()
 perf = aml.leader.model_performance(test)
@@ -440,7 +432,7 @@ round(perf.auc(), 3)
 
 ## mljar-supervised
 from supervised.automl import AutoML
-automl = AutoML(mode="Compete", eval_metric="auc", total_time_limit=900, random_state=48924)
+automl = AutoML(mode="Compete", eval_metric="auc", total_time_limit=3600, random_state=48924)
 automl.fit(X_train, y_train)
 
 y_pred_prob = automl.predict_proba(X_test)
@@ -452,21 +444,21 @@ print("Test accuracy:", accuracy_score(y_test, predictions["label"].astype(int))
 
 ## TPOT
 from tpot import TPOTClassifier
-tpot = TPOTClassifier(max_time_mins=15, cv=5, random_state=48924, scoring='roc_auc', verbosity=2)
+tpot = TPOTClassifier(max_time_mins=60, cv=5, random_state=48924, scoring='roc_auc', verbosity=2)
 tpot.fit(X_train, y_train)
-print(tpot.score(X_test, y_test))
+print(round(tpot.score(X_test, y_test), 3))
 ```
 
 | **Model**        | @fearon2003ethnicity | @collier2004greed |
 |------------------+---------------------:+------------------:|
 | @ward2010perils  |                0.738 |             0.823 |
-| H2OAutoML        |                      |                   |
+| H2OAutoML        |                0.714 |                   |
 | mljar-supervised |                      |                   |
-| TPOT             |                      |                   |
+| TPOT             |                0.723 |                   |
 
 Table: Area under the ROC curve from AutoML learners.
 
-The AutoML classifiers to a good job in both tasks. 
+The AutoML classifiers do a very good job in both tasks. 
 
 # Sharing AutoML Models with Docker 
 
@@ -479,7 +471,7 @@ any other software or folders to the base Docker image. Instead of sharing just
 data and code, as it is common practice in the social sciences, scholars can
 distribute their complete software environment to collaborators and reviewers.
 Thus, Docker guarantees that all computer libraries are identical to the ones
-in the original analysis, what assures complete reproducibility and easy
+in the original analysis, what ensures complete reproducibility and easy
 deployment to other machines.
 
 [^docker]: Please find the Docker documentation files at <https://docs.docker.com>.
@@ -506,8 +498,7 @@ To install the container, run the following code on your terminal:
 
 ```{bash, eval=F, size="footnotesize", warning=F, error=F}
 docker pull ubuntu    # download the image from DockerHub
-docker run -it ubuntu # run the image; -it connects the computer to the Docker
-containter
+docker run -it ubuntu # run the image; -it to start the Docker container
 ```
 
 You will see a root session in your terminal:
@@ -539,7 +530,7 @@ cp` command.
 
 ```{bash, eval=F, size="footnotesize", warning=F, error=F}
 # In the Docker container:
-exit         # close the connection
+exit         # stop the container
 # In your regular terminal:
 docker ps -a # list all available containers
 ```
@@ -587,9 +578,9 @@ knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/automl-pap
 Now we need to push the image to DockerHub. Go to
 <https://hub.docker.com/repositories> and create a new repository. Then, add
 your DockerHub credentials to your local machine with `docker login
---username=your_username` and create a tag for your container. Finally, type
-`docker push your_username/repository_name` to push your image to DockerHub.
-Example code:
+--username=your_username` and create a tag for your container. Note that the
+container ID has been updated (`602d`). Finally, type `docker push
+your_username/repository_name` to push your image to DockerHub. Example code:
 
 \vspace{.3cm}
 
@@ -604,41 +595,38 @@ docker push danilofreire/mercatus-automl:first     # push image to DockerHub
 ```{r, echo=FALSE, fig.cap="Container uploaded to DockerHub.", out.width = "80%", fig.align="center"}
 knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/automl-paper/dockerhub.png")
 ```
+
 And that completes our tutorial. The image has been successfully uploaded to
 DockerHub, and researchers can download the file, along with the source script
 and data, with `docker pull danilofreire/mercatus-automl`. As we have seen,
-Docker offers a flexible, fully reproducible method to share machine learning
-models or other statistical analyses. It goes beyond current academic
-reproducibility practices and ensures the exact replication of the findings.
+Docker offers a flexible and fully reproducible method to share machine
+learning models or other statistical analyses. It goes beyond current academic
+reproducibility practices and certify the exact replication of the findings.
 
 # Conclusion
 
 Computer scientists have applied machine learning to predict a myriad of
-outcomes, from online shopping habits to real-time object recognition.
-Algorithms now power email filters, translation software, satellite farming,
-self-driving cars, and many other applications. In the past years, social
-scientists have also adopted machine learning tools to forecast political
-events and improve public policies. AutoML is a new class of algorithms that
-can facilitate machine learning tasks and allows non-experts to use
-sophisticated computer estimations in their work with few lines of code. Here I
-have provided a simple introduction to three Python AutoML libraries and show
+outcomes, from shopping habits to kidney diseases. Algorithms now power email
+filters, translation software, satellite farming, self-driving cars, and many
+other devices. In the past years, social scientists have also adopted machine
+learning tools to forecast political events and improve public policies. AutoML
+is a new class of algorithms that facilitates machine learning tasks and allows
+non-experts to use sophisticated computer estimations in their work. Here I
+have provided a simple introduction to three Python AutoML libraries and shown
 that their prediction accuracy is on par with those achieved by area experts.
-Moreover, I suggest that users should adopt Docker to share their machine
-learning models and have fully reproducible pipelines.
+Moreover, I have suggested that users should adopt Docker to share their
+machine learning models and have fully reproducible pipelines.
 
 AutoML is a dynamic field that is still in its infancy. The growing support
 from big technology firms such as Google, Amazon, and Microsoft indicates that
-we should expect a large number of new algorithms and applications in the near
-future. Fortunately, most AutoML tools remain free to use, so individuals are
-likely to benefit from these advances. While non-experts can use AutoML tools
-to produce good estimates in a short period of time, experienced practitioners
-are able to automate labour-intensive tasks and focus on improving the
-predictive ability of their models. In sum, I hope AutoML becomes an important
-part of the research methods toolkit, and that automated models help policy
-analysts to answer some of their most pressing questions.
-
-
-
+we should expect a large number of new algorithms in the future. Fortunately,
+most AutoML tools remain free to use, so individuals are likely to benefit from
+these advances. While non-experts can use AutoML tools to produce good
+estimates with minimal coding experience, practitioners are able to automate
+labour-intensive tasks and focus on improving the predictive ability of their
+models. In sum, I hope AutoML becomes an important part of the machine learning
+toolkit, and that automated models help policy analysts to answer some of their
+most pressing questions.
 
 \newpage
 

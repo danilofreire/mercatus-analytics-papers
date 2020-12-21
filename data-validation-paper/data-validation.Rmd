@@ -1,7 +1,7 @@
 ---
 title: How to Improve Data Validation in Five Steps
 author: Danilo Freire[^info]
-date: 6th of October, 2020
+date: \today
 abstract: ""
 fontsize: 12pt
 bibliography: references.bib
@@ -46,19 +46,20 @@ common feature in academic studies, allowing researchers to easily share and
 verify their analyses [@hoffler2017replication; @key2016we]. Scholars can also
 store their data and code in public repositories, such as
 [GitHub](http://github.com) or the [Harvard
-Dataverse](https://dataverse.harvard.edu), which guarantee that academic materials
-will be preserved for future reference [@king2007introduction].
+Dataverse](https://dataverse.harvard.edu), which guarantee that academic
+materials will be preserved for future reference [@king2007introduction].
 
 Despite the significant progress in data analytics, data validation techniques
-have received little attention in academia. We define data validation as "[...]
-_an activity verifying whether or not a combination of values is a member of a
-set of acceptable combinations_" [@ess2018methodology, 8]. One reason for this
-omission is that data quality procedures are not as standardised as other
-statistical methods, so users often need to create _ad hoc_ semantic rules to
-compile new data [@mcmann2016strategies]. Moreover, scholars should engage with
-several sources of information to establish conceptual validity, which requires
-unique ways to aggregate abstract concepts into a set of plausible numeric
-values [@munck2002conceptualizing; @schedler2012judgment].
+have received little attention in academia. Data validation may be defined as
+"[...] _an activity verifying whether or not a combination of values is a
+member of a set of acceptable combinations_" [@ess2018methodology, 8]. One
+reason for this omission is that data quality procedures are not as
+standardised as other statistical methods, so users often need to create _ad
+hoc_ semantic rules to compile new data [@mcmann2016strategies]. Moreover,
+scholars should engage with several sources of information to establish
+conceptual validity, which requires unique ways to aggregate abstract concepts
+into a set of plausible numeric values [@munck2002conceptualizing;
+@schedler2012judgment].
 
 In this paper, I present five steps to help scholars improve their data
 validation process. My idea is to offer a short check-list that is useful to
@@ -73,11 +74,7 @@ knowledge to statistical measurements. I present the concepts according to
 their level of abstraction, with the last three demanding more theorisation
 from the authors.
 
-# Five Steps Towards Better Data Validation Processes[^summary]
-
-[^summary]: Due to space constraints, this section includes only a brief summary
-of the five validation steps I will present in the paper. Each of the topics
-will be expanded in the final article.
+# Five Steps Towards Better Data Validation Processes
 
 ## Step 1: Technical Consistency 
 
