@@ -4,14 +4,18 @@ author: Danilo Freire[^info]
 date: \today
 abstract: ""
 fontsize: 12pt
-bibliography: references.bib
+bibliography: ../automl-paper/references.bib
 biblio-style: apalike
-output: pdf_document
+output:
+   pdf_document:
+     number_sections: true
 header-includes:
+   - \usepackage[UKenglish]{babel}
+   - \usepackage[UKenglish]{isodate}
    - \usepackage{libertine}
+   - \usepackage[libertine]{newtxmath}
    - \usepackage{inconsolata}
    - \usepackage{setspace}
-   - \usepackage{amsmath}
 ---
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
@@ -28,15 +32,16 @@ if (!require("kableExtra")) {
 [danilofreire@gmail.com](mailto:danilofreire@gmail.com),
 <https://danilofreire.github.io>.
 
+\doublespacing
+
 # Introduction
 
-Social scientists are awash with data. According to a recent estimate,
-humans produce about 2.5 billion gigabytes of information every day, and 90
-percent of the global data were created in the last two years alone
-[@ibm2016trends]. Governments also generate more data than ever before, with a
-growing number of state agencies opening their data and allowing users to
-access public records directly or via APIs [e.g., @al2017regdata;
-@mcdonnell2019congressbr].
+Social scientists are awash with data. According to a recent estimate, humans
+produce about 2.5 billion gigabytes of information every day, and 90 percent of
+the global data were created in only two years [@ibm2016trends]. Governments
+also generate more data than ever before, with a growing number of agencies
+opening their archives and allowing users to access public records directly or
+via APIs [e.g., @al2017regdata; @mcdonnell2019congressbr].
 
 In this context, researchers have developed a series of tools to obtain, clean,
 and store data files. R and Python, two open source programming languages, have
@@ -49,10 +54,10 @@ store their data and code in public repositories, such as
 Dataverse](https://dataverse.harvard.edu), which guarantee that academic
 materials will be preserved for future reference [@king2007introduction].
 
-Despite the significant progress in data analytics, data validation techniques
-have received little attention in academia. Data validation may be defined as
-"[...] _an activity verifying whether or not a combination of values is a
-member of a set of acceptable combinations_" [@ess2018methodology, 8]. One
+Although there has been significant progress in data analytics, data validation
+techniques have received little attention in academia. Data validation is
+defined as "[...] _an activity verifying whether or not a combination of values
+is a member of a set of acceptable combinations_" [@ess2018methodology, 8]. One
 reason for this omission is that data quality procedures are not as
 standardised as other statistical methods, so users often need to create _ad
 hoc_ semantic rules to compile new data [@mcmann2016strategies]. Moreover,
@@ -63,37 +68,43 @@ into a set of plausible numeric values [@munck2002conceptualizing;
 
 In this paper, I present five steps to help scholars improve their data
 validation process. My idea is to offer a short check-list that is useful to
-both data developers and reviewers, so that all parties involved in the
-validation procedures have a common understanding of what constitutes good
-practices in the field. My recommendations are based on the standards set by
-Eurostat, an agency that provides statistical information to the European Union
-(EU), and on the recent work by @mcmann2016strategies and
-@schedler2012judgment. I discuss how to create testable validation functions,
-how to increase construct validity, and how to incorporate qualitative
-knowledge to statistical measurements. I present the concepts according to
-their level of abstraction, with the last three demanding more theorisation
-from the authors.
+both data developers and reviewers, so all parties involved in the validation
+procedures have a common understanding of what constitutes good practices in
+the field. My recommendations are based on the standards set by Eurostat, an
+agency that provides statistical information to the European Union (EU), and on
+recent work by @mcmann2016strategies and @schedler2012judgment. I discuss how
+to create testable validation functions, how to increase construct validity,
+and how to incorporate qualitative knowledge to statistical measurements. I
+present the concepts according to their level of abstraction, with the last
+three demanding more theorisation than the first two, and I provide practical
+examples on how scholars can add the suggestions below to their work.
 
 # Five Steps Towards Better Data Validation Processes
 
 ## Step 1: Technical Consistency 
 
-Ensuring technical consistency is a straightforward part of the data validation
-process, yet it is sometimes overlooked even by experienced scholars. Technical
-consistency means that the data should be machine-readable and as intuitive as
-possible to humans. The computer science literature has some important
-suggestions in this regard. First, data should be "tidy", that is, in a format
-where each column represents one variable, each row represents one observation,
-and each observational unit forms a table [@wickham2014tidy, 4]. It is
-important to add an identifying variable (primary key) that is unique across
-all records [@van2019data, 1]. Also, variables should include only one
-information and have appropriate column types. For instance, users should store
-strings as character vectors, numbers as numeric values (floating points or
-integers), binary indicators as boolean vectors (true or false), and
-categorical variables as factors [@ess2018methodology, 10]. Whenever possible,
-save tabular data in pure text format as any software can read it.
-Comma-separated values files (`.csv`) have wide support across many operating
-systems and computer languages.
+Ensuring technical consistency is perhaps the easiest task in the data
+validation process, yet it is often overlooked even by experienced scholars.
+Technical consistency means that the data should be machine-readable and as
+intuitive as possible to humans. More specifically, scholars have to ensure
+that their data do not produce parsing errors, that values corresponding to
+variables and observations are clearly identified, and that other researchers
+can analyse the data as soon as they receive them.
+
+The computer science literature has some important suggestions in this regard.
+First, data should be "tidy", that is, in a format where each column represents
+one variable, each row represents one observation, and each observational unit
+forms a table [@wickham2014tidy, 4]. 
+
+It is important to add an identifying
+variable (primary key) that is unique across all records [@van2019data, 1].
+Also, variables should include only one information and have appropriate column
+types. For instance, users should store strings as character vectors, numbers
+as numeric values (floating points or integers), binary indicators as boolean
+vectors (true or false), and categorical variables as factors
+[@ess2018methodology, 10]. Whenever possible, save tabular data in pure text
+format as any software can read it. Comma-separated values files (`.csv`) have
+wide support across many operating systems and computer languages.
 
 ## Step 2: Logical Consistency
 
@@ -185,5 +196,7 @@ logical statements. That said, it is recommended that authors investigate why
 outliers occur and test whether coder characteristics or measurement
 construction explain these differences. @mcmann2016strategies [p. 27-36]
 provide an empirical case study on how to assess convergent validity.
+
+\newpage
 
 # References

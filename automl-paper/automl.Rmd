@@ -297,7 +297,7 @@ available at <https://github.com/danilofreire/mercatus-analytics-papers>.
 
 Regarding the estimations, I use the area under the ROC curve as a score metric
 to make the results comparable with those by @ward2010perils. I limit the
-running time to 60 minutes per model, so users can have a good idea of how
+running time to 10 minutes per model, so users can have a good idea of how
 AutoML algorithms perform within a small time window. For reproducibility, I
 run all models with the same seed number generated at
 [random.org](http://random.org) (48924).
@@ -452,9 +452,9 @@ print(round(tpot.score(X_test, y_test), 3))
 | **Model**        | @fearon2003ethnicity | @collier2004greed |
 |------------------+---------------------:+------------------:|
 | @ward2010perils  |                0.738 |             0.823 |
-| H2OAutoML        |                0.714 |                   |
+| H2OAutoML        |            **0.783** |                   |
 | mljar-supervised |                      |                   |
-| TPOT             |                0.723 |                   |
+| TPOT             |                0.715 |                   |
 
 Table: Area under the ROC curve from AutoML learners.
 
