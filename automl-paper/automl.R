@@ -43,11 +43,12 @@ write_csv(fl_data, "fl_data.csv")
 # Collier and Hoeffler (2004)
 
 # Load data
-load("ch.RData")
+ch <- haven::read_dta("~/Documents/github/mercatus-analytics-papers/automl-paper/G&G.dta")
 
 # Select variables
 ch_data <- ch %>%
-  select(warsa, sxp, sxp2, secm, gy1, peace,  geogia, lnpop, frac, etdo4590)
+  select(warsa, sxp, sxp2, secm, gy1, peace,  geogia, lnpop, frac, etdo4590) %>%
+  drop_na()
 
 # Independent variables, dependent variable
 ch_x <- ch_data %>% select(-warsa)

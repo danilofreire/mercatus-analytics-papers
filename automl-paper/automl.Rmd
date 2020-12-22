@@ -91,19 +91,18 @@ learning competitions [@autogluon2020kaggle; @googleblog2020automl].
 
 In this paper, I introduce three Python AutoML algorithms that policy analysts
 may consider in their work. In the following section, I describe the main
-functionalities of `H2O AutoML` [@h2o2017automl], `mljar-supervised`
-[@mljar2020], and `TPOT` [@olson2016tpot]. All of the algorithms are open
-source, actively maintained, and easy to use. Then, I replicate two analyses
-that employ expert-coded machine learning models and show that AutoML can
-achieve comparable or better predictive performance with only a few lines of
-code. Lastly, I discuss how users can make their AutoML scalable and
-reproducible with Docker containers. Docker allows researchers to create an
-image of their complete working environment, thus all AutoML specifications and
-dependencies are automatically embedded in the Docker file. While Docker has
-been widely employed in business applications, its use in academia remains
-limited. I provide a simple tutorial so that readers can upload their AutoML
-setup to a website and share their Docker containers with co-authors and
-referees.
+functionalities of `AutoKeras` [@jin2019auto], `H2O AutoML` [@h2o2017automl],
+and `TPOT` [@olson2016tpot]. All of the algorithms are open source, actively
+maintained, and easy to use. Then, I replicate two analyses that employ
+expert-coded machine learning models and show that AutoML can achieve
+comparable or better predictive performance with only a few lines of code.
+Lastly, I discuss how users can make their AutoML scalable and reproducible
+with Docker containers. Docker allows researchers to create an image of their
+complete working environment, thus all AutoML specifications and dependencies
+are automatically embedded in the Docker file. While Docker has been widely
+employed in business applications, its use in academia remains limited. I
+provide a simple tutorial so that readers can upload their AutoML setup to a
+website and share their Docker containers with co-authors and referees.
 
 # A Brief Introduction to AutoML Algorithms
 
@@ -139,21 +138,53 @@ multicollinearity [@he2020automl; @truong2019towards]. AutoML takes a
 data-driven approach here too, and selects those data transformations that
 improve forecasting scores the most.
 
+## AutoKeras
+
+`AutoKeras` [@jin2019auto] is an AutoML algorithm based on `Keras`
+[@chollet2015keras], an interface for Google's `TensorFlow` machine learning
+platform [@tensorflow2015]. `AutoKeras` focuses exclusively on deep neural
+networks, and it performs classification and regression tasks on images, texts,
+and tabular data. Neural networks require extensive tuning to increase
+prediction accuracy, but `AutoKeras` uses neural architectural search (NAS) to
+automatically optimise the network hyperparameters. In this sense, users can
+train complex deep learning algorithms with little to no machine learning
+experience. One only needs to write four lines of code to run a classification
+task in `AutoKeras`:
+
+```{python, eval = FALSE, size="footnotesize"}
+import autokeras as ak                # load library
+
+model = ak.StructuredDataClassifier() # build model for tabular data
+model.fit(X_train, y_train)           # fit model with training data split
+predictions = model.predict(X_test)   # predictions
+```
+
+In the example above, $X$ is the set of predictors and $y$ is the response
+variable. Scholars just need to split the dataset into training and test
+partitions and separate the independent from the dependent variables. After
+that, `AutoKeras` will estimate a series of neural networks to predict $y$.
+Users can also pass many parameters to the `ak.StructuredDataClassifier()`
+function, including the metric they want to minimise of maximise, such as
+accuracy or area under the ROC curve, and set the number of networks the model
+will create and the time reserved for each task. Please refer to 
+<https://autokeras.com> to know more about `AutoKeras`'s model parameters and
+how to use the software for image or text classification and regression.
+
 ## H2O AutoML
 
-The first algorithm I discuss is `H2O AutoML`. Developed by H2O.ai, a company
-based in Silicon Valley, `H2OAutoML` is a free and open source automated
-machine learning solution. Thus, individuals and firms can use it at no cost,
-and they can also inspect and modify the original code if they want to. Another
-advantage of `H2O AutoML` is that it provides a graphic interface that helps
-beginners to get started with the platform. H2O.ai offers their AutoML software
-for both `R` and `Python`, and the packages use the same functions and
-arguments in the two languages. Users only need to specify the dependent and
-independent variables, the training and test datasets, and the prediction task
-they want to run. The algorithm will automatically find the model that best
-fits the training data, evaluate its performance on the test dataset, and
-report model statistics. Example code for binary classification tasks in Python
-follow below:
+The second algorithm I discuss here is `H2O AutoML`. Developed by H2O.ai, a
+company based in Silicon Valley, `H2OAutoML` is a free and open source
+automated machine learning solution. Thus, individuals and firms can use it at
+no cost, and they can also inspect and modify the original code if they want
+to. Another advantage of `H2O AutoML` is that it provides a graphic interface
+that helps beginners to get started with the platform. H2O.ai offers their
+AutoML software for both `R` and `Python`, and the packages use the same
+functions and arguments in the two languages. Users only need to specify the
+dependent and independent variables, the training and test datasets, and the
+prediction task they want to run. The algorithm will automatically find the
+model that best fits the training data, evaluate its performance on the test
+dataset, and report model statistics. Example code for binary classification
+tasks in Python follow below:
 
 \vspace{.3cm}
 
@@ -189,46 +220,12 @@ forecasting importance of every predictor [@gromping2009variable], SHAP values
 <http://docs.h2o.ai/h2o/latest-stable/h2o-docs/explain.html> for more
 information on `H2OAutoML`'s model explainability functions.
 
-## mljar-supervised
-
-`mljar-supervised` is a new algorithm that builds AutoML models for tabular
-data. It includes many cutting-edge machine learning tools, like neural
-networks, and is able to combine these methods to increase prediction
-performance. Like `H2OAutoML`, `mljar-supervised` offers many model explanation
-functions and it describes the complete machine learning pipeline.
-`mljar-supervised` even creates a Markdown file with graphs and results that
-users can share or post on a website.
-
-The software can also do some pre-processing tasks, such as imputing missing
-values or converting categorical predictors into dummy variables. Moreover,
-experienced users may pass their own parameters to the model they want to
-estimate and stack algorithms together according to their preferences. One can
-run a classification model with the following code:
-
-\vspace{.3cm}
-
-```{python, eval = FALSE, size="footnotesize"}
-from supervised.automl import AutoML        # load the library
-
-model = AutoML()                            # load the model
-model.fit(X_training_data, y_training_data) # estimate models using training data
-predictions = model.predict(X_test)         # compare predictions with test data
-```
-
-To load the model explainability functions included in the package, just pass
-`AutoML(mode="Explain")` to the algorithm and it will show the  learning
-curves, variable importance plots, and SHAP plots. Researchers interested in
-employing `mljar-supervised` in machine learning competitions may find the
-`AutoML(mode="Compete")` function particularly useful. It not only splits the
-data into 10 cross-validation folds, but also builds machine
-learning ensembles automatically. 
-
 ## TPOT
 
-The last algorithm I present here is `TPOT`, or _Tree-based Pipeline
-Optimization Tool_. It is one of oldest AutoML solutions for Python, and its
-authors have won several awards for their work.[^tpot-awards] `TPOT` uses a
-genetic search algorithm to find the best model for a given dataset
+The last algorithm I introduce in this section is `TPOT`, or _Tree-based
+Pipeline Optimization Tool_. It is one of oldest AutoML solutions for Python,
+and its authors have won several awards for their work.[^tpot-awards] `TPOT`
+uses a genetic search algorithm to find the best model for a given dataset
 [@olson2016tpot]. The principle borrows ideas from evolutionary biology and
 consists of three steps. First, the algorithm estimates a baseline model. Then,
 it makes small random changes to the original computations. After that, it
@@ -238,19 +235,20 @@ the maximum computation time defined by the user.
 
 [^tpot-awards]: A list of the awards is available at <http://automl.info/tpot/>.
 
-Similar to `mljar-supervised`, `TPOT` uses existing `scikit-learn` functions to
-estimate the models, and it does so with minimal human input. `TPOT` supports
-GPU acceleration and has fast estimation times when compared to other tools.
-Users can create a classification model with the example code below:
+`TPOT` uses the `scikit-learn` [@scikit2011] Python library to estimate the
+models, but in contrast with the original package, it does so with minimal
+human input. `TPOT` supports GPU acceleration and has fast estimation times
+when compared to other tools. Users can create a classification model with the
+example code below:
 
 \vspace{.3cm}
 
 ```{python, eval = FALSE, size="footnotesize"}
-from tpot import TPOTClassifier             # load library
+from tpot import TPOTClassifier    # load library
 
-model = TPOTClassifier()                    # create model
-model.fit(X_training_data, y_training_data) # fit model
-print(model.score(X_test, y_test))          # print model evaluation
+model = TPOTClassifier()           # build model
+model.fit(X_train, y_train)        # fit model
+print(model.score(X_test, y_test)) # print model evaluation
 ```
 
 Where $X$ is the matrix of covariates and $y$ is the response variable. `TPOT`
@@ -261,7 +259,7 @@ documentation is available at <http://epistasislab.github.io/tpot/>.
 
 As we can see, the code shown in the three examples is almost identical,
 although the functions are running different processes in the background.
-However, `H2OAutoML`, `mljar-supervised`, and `TPOT` can all quickly estimate
+However, `AutoKeras`, `H2OAutoML`, and `TPOT` can all quickly estimate
 regression or classification models for numeric data. Since these are the two
 tasks policy analysts most often do, the three algorithms presented above can
 be easily integrated into their machine learning workflow.
@@ -452,13 +450,18 @@ print(round(tpot.score(X_test, y_test), 3))
 | **Model**        | @fearon2003ethnicity | @collier2004greed |
 |------------------+---------------------:+------------------:|
 | @ward2010perils  |                0.738 |             0.823 |
-| H2OAutoML        |            **0.783** |                   |
-| mljar-supervised |                      |                   |
-| TPOT             |                0.715 |                   |
+| AutoKeras        |                0.736 |             0.712 |
+| H2OAutoML        |            **0.783** |             0.703 |
+| TPOT             |                0.715 |         **0.832** |
 
 Table: Area under the ROC curve from AutoML learners.
 
-The AutoML classifiers do a very good job in both tasks. 
+Overall, the AutoML classifiers do a good job at predicting civil conflicts.
+All results are close to the original benchmark, and in each task one of the
+algorithms has a better predictive performance than the baseline model (in
+bold). Considering that civil conflicts are hard to predict and that the
+algorithms had a limited modelling time (10 minutes), the results are an
+indicative of their strong forecasting accuracy even in adverse conditions.
 
 # Sharing AutoML Models with Docker 
 
@@ -514,8 +517,8 @@ Then, I install Python, R, and the required AutoML libraries.
 ```{bash, eval=F, size="footnotesize", warning=F, error=F}
 apt update -y                                      # update the system
 apt install python3 python3-pip r-base default-jre # required files
+pip3 install autokeras                             # AutoKeras
 pip3 install h2o                                   # H2O AutoML
-pip3 install mljar-supervised                      # mljar-supervised
 pip3 install tpot                                  # TPOT
 ```
 
