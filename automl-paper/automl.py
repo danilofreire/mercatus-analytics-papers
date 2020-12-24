@@ -60,7 +60,6 @@ automl = AutoML(total_time_limit=600, random_state=8305)
 automl.fit(X_train, y_train)
 predictions = automl.predict(X_test)
 roc_auc_score(y_test, predictions)
-
 y_pred_prob = automl.predict_proba(X_test)
 
 ## TPOT
@@ -125,16 +124,7 @@ automl = AutoML(mode="Compete", total_time_limit=600, random_state=8305)
 automl.fit(X_train, y_train)
 predictions = automl.predict(X_test)
 roc_auc_score(y_test, predictions)
-
 y_pred_prob = automl.predict_proba(X_test)
-
-y_predicted = automl.predict(X_test)
-result = pd.DataFrame({"Predicted": y_predicted["label"], "Target": np.array(y_test)})
-filtro = result.Predicted == result.Target
-
-df = pd.DataFrame(result)
-confusion_matrix = pd.crosstab(df['Target'], df['Predicted'], rownames=['Target'], colnames=['Predicted'], margins = True)
-confusion_matrix
 
 ## TPOT
 from tpot import TPOTClassifier

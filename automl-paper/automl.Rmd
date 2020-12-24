@@ -312,6 +312,7 @@ if (!require("haven")) {
 if (!require("tidyverse")) {
     install.packages("tidyverse")
 }
+set.seed(8305)
 
 ### Data wrangling
 
@@ -449,7 +450,6 @@ automl = AutoML(total_time_limit=600, random_state=8305)
 automl.fit(X_train, y_train)
 predictions = automl.predict(X_test)
 roc_auc_score(y_test, predictions)
-
 y_pred_prob = automl.predict_proba(X_test)
 
 ## TPOT
@@ -513,16 +513,7 @@ automl = AutoML(mode="Compete", total_time_limit=600, random_state=8305)
 automl.fit(X_train, y_train)
 predictions = automl.predict(X_test)
 roc_auc_score(y_test, predictions)
-
 y_pred_prob = automl.predict_proba(X_test)
-
-y_predicted = automl.predict(X_test)
-result = pd.DataFrame({"Predicted": y_predicted["label"], "Target": np.array(y_test)})
-filtro = result.Predicted == result.Target
-
-df = pd.DataFrame(result)
-confusion_matrix = pd.crosstab(df['Target'], df['Predicted'], rownames=['Target'], colnames=['Predicted'], margins = True)
-confusion_matrix
 
 ## TPOT
 from tpot import TPOTClassifier
@@ -534,9 +525,9 @@ print(round(tpot.score(X_test, y_test), 3))
 | **Model**        | @fearon2003ethnicity | @collier2004greed |
 |------------------+---------------------:+------------------:|
 | @ward2010perils  |                0.738 |             0.823 |
-| AutoKeras        |                0.736 |             0.712 |
+| AutoKeras        |                0.736 |             0.758 |
 | H2OAutoML        |            **0.783** |             0.703 |
-| TPOT             |                0.715 |         **0.832** |
+| TPOT             |                0.715 |         **0.825** |
 
 Table: Area under the ROC curve from AutoML learners.
 

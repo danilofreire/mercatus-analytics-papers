@@ -94,17 +94,33 @@ can analyse the data as soon as they receive them.
 The computer science literature has some important suggestions in this regard.
 First, data should be "tidy", that is, in a format where each column represents
 one variable, each row represents one observation, and each observational unit
-forms a table [@wickham2014tidy, 4]. 
+forms a table [@wickham2014tidy, 4]. Although the suggestions seem simple,
+scholars sometimes break these rules when building a new data. It is not
+uncommon to see multiple variables stored as a single column (e.g., race and
+gender together) or one variable divided into many columns (e.g., one column
+per level of income). Fortunately, most datasets can be tidied up with simple
+operations, such as pivoting tables, splitting or combining columns, or
+filtering values. Please refer to @wickham2020r4ds for more information on how
+to clean messy data. 
 
-It is important to add an identifying
-variable (primary key) that is unique across all records [@van2019data, 1].
-Also, variables should include only one information and have appropriate column
-types. For instance, users should store strings as character vectors, numbers
-as numeric values (floating points or integers), binary indicators as boolean
-vectors (true or false), and categorical variables as factors
-[@ess2018methodology, 10]. Whenever possible, save tabular data in pure text
-format as any software can read it. Comma-separated values files (`.csv`) have
-wide support across many operating systems and computer languages.
+```{r, echo=FALSE, fig.cap="A tidy dataset. Source: Wickham and Grolemund (2020).", out.width = "80%", fig.align="center"}
+knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/data-validation-paper/tidy.png")
+```
+
+It is important to add an identifying variable (primary key) that is unique
+across all records [@van2019data, 1]. This is particularly relevant when
+scholars need to merge different datasets, as the primary keys have to be the
+same across all tables. Also, variables should have appropriate column types,
+or the machine may not be able to parse the values correctly. For instance,
+users should store strings as character vectors, numbers as numeric values
+(floating points or integers), binary indicators as boolean vectors (true or
+false), and categorical variables as factors [@ess2018methodology, 10].
+Whenever possible, save tabular data in pure text format as any software can
+read it. Comma-separated values files (`.csv`) have wide support across many
+operating systems and can be easily opened in Excel, Python, and R with no
+errors.
+
+
 
 ## Step 2: Logical Consistency
 
