@@ -120,7 +120,18 @@ read it. Comma-separated values files (`.csv`) have wide support across many
 operating systems and can be easily opened in Excel, Python, and R with no
 errors.
 
-
+Although not strictly required, it is recommended that researchers use version
+control to keep track of changes and ensure technical consistency of their data
+files. [Git](https://git-scm.com) is the most popular version control system.
+While it was first designed to manage computer code, Git allows users to record
+and recall any particular version of a given document, and it works well with
+pure text files like `.csv`. This increases transparency in academic research,
+as others can trace all steps of the data management process and serve as a
+reliable back up in the case of data loss [@ram2013git]. Moreover, contributors
+can modify the files and merge them to the main Git repository, what facilitates
+collaboration and review at every stage of the research project. Since users can
+quickly revert file changes with Git, the process is risk-free. For more
+information about Git, please visit <https://git-scm.com>.
 
 ## Step 2: Logical Consistency
 
