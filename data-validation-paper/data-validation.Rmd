@@ -7,15 +7,12 @@ fontsize: 12pt
 bibliography: ../automl-paper/references.bib
 biblio-style: apalike
 output:
-   pdf_document:
-     number_sections: true
-header-includes:
-   - \usepackage[UKenglish]{babel}
-   - \usepackage[UKenglish]{isodate}
-   - \usepackage{libertine}
-   - \usepackage[libertine]{newtxmath}
-   - \usepackage{inconsolata}
-   - \usepackage{setspace}
+  pdf_document:
+    citation_package: natbib
+    fig_caption: yes
+    number_sections: yes
+    keep_tex: no
+    template: ../automl-paper/article-template.latex
 ---
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
@@ -49,7 +46,7 @@ become the _de facto_ standards for downloading and manipulating data
 [@magoulas2020keyareas; @perkel2018jupyter]. Reproducible scripts are now a
 common feature in academic studies, allowing researchers to easily share and
 verify their analyses [@hoffler2017replication; @key2016we]. Scholars can also
-store their data and code in public repositories, such as
+store their materials in public repositories, such as
 [GitHub](http://github.com) or the [Harvard
 Dataverse](https://dataverse.harvard.edu), which guarantee that academic
 materials will be preserved for future reference [@king2007introduction].
@@ -100,10 +97,10 @@ uncommon to see multiple variables stored as a single column (e.g., race and
 gender together) or one variable divided into many columns (e.g., one column
 per level of income). Fortunately, most datasets can be tidied up with simple
 operations, such as pivoting tables, splitting or combining columns, or
-filtering values. Please refer to @wickham2020r4ds for more information on how
+filtering values. Please refer to @wickham2016r4ds for more information on how
 to clean messy data. 
 
-```{r, echo=FALSE, fig.cap="A tidy dataset. Source: Wickham and Grolemund (2020).", out.width = "80%", fig.align="center"}
+```{r, echo=FALSE, fig.cap="A tidy dataset. Source: Wickham and Grolemund (2016).", out.width = "80%", fig.align="center"}
 knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/data-validation-paper/tidy.png")
 ```
 
@@ -113,36 +110,50 @@ scholars need to merge different datasets, as the primary keys have to be the
 same across all tables. Also, variables should have appropriate column types,
 or the machine may not be able to parse the values correctly. For instance,
 users should store strings as character vectors, numbers as numeric values
-(floating points or integers), binary indicators as boolean vectors (true or
-false), and categorical variables as factors [@ess2018methodology, 10].
+(floating points or integers), binary indicators as boolean vectors (`TRUE` or
+`FALSE`), and categorical variables as factors [@ess2018methodology, 10].
 Whenever possible, save tabular data in pure text format as any software can
 read it. Comma-separated values files (`.csv`) have wide support across many
 operating systems and can be easily opened in Excel, Python, and R with no
 errors.
 
+Variables containing textual data or times and dates need special attention as
+they are prone to encoding issues. There are dozens of character encoding
+standards, but a recent survey shows that Unicode Transformation Format --
+8-bit (UTF-8) is used in about 96% of all internet websites
+[@w3techs2020encoding]. In this sense, scholars should use UTF-8 to store text
+variables as it is widely accessible. UTF-8 is able to convert characters from
+many alphabets and its most recent version also stores emojis. Regarding times
+and dates, users are advised to record time using the ISO 8601 standard ISO. It
+uses the Gregorian calendar and a 24-h timescale [@van2018statistical, 52].
+Dates are stored in the `YYYY-MM-DD` format, in which `YYYY` represents the
+year, `MM` the month, and `DD` the day. The ISO standard suggests that time of
+day should be expressed as `hh:mm:ss`, for hour, minute, and second,
+respectively.
+
 Although not strictly required, it is recommended that researchers use version
-control to keep track of changes and ensure technical consistency of their data
-files. [Git](https://git-scm.com) is the most popular version control system.
-While it was first designed to manage computer code, Git allows users to record
-and recall any particular version of a given document, and it works well with
-pure text files like `.csv`. This increases transparency in academic research,
-as others can trace all steps of the data management process and serve as a
-reliable back up in the case of data loss [@ram2013git]. Moreover, contributors
-can modify the files and merge them to the main Git repository, what facilitates
-collaboration and review at every stage of the research project. Since users can
-quickly revert file changes with Git, the process is risk-free. For more
-information about Git, please visit <https://git-scm.com>.
+control to keep track of changes and ensure the technical consistency of their
+data files. [Git](https://git-scm.com) is the most popular version control
+system. While it was first designed to manage computer code, Git allows users
+to record and recall any particular version of a given document, and it works
+well with pure text files like `.csv`. This increases transparency in academic
+research, as others can trace all steps of the data management process and
+serve as a reliable back up in the case of data loss [@ram2013git]. Moreover,
+contributors can modify the files and merge them to the main Git repository,
+what facilitates collaboration and review at every stage of the research
+project. Since users can quickly revert file changes with Git, the process is
+risk-free. For more information about Git, please visit <https://git-scm.com>.
 
 ## Step 2: Logical Consistency
 
 The second step involves the elaboration of domain-specific validation rules.
-In contrast with technical consistency, logical integrity requires rules that
-incorporate _a priori_ knowledge regarding the data at hand, and as such there
-are no rules of thumb available for this step of the data validation process.
-However, we can apply a general framework to logical consistency. One can
-create _validation functions_ to test the quality of the data, such as
-conditional statements which produce a set of `TRUE` or `FALSE` responses
-[@van2019data, 3]. 
+In contrast with technical integrity, logical consistency requires rules that
+incorporate _a priori_ knowledge from a particular scientific field, so logical
+validation methods are domain-specific by design. However, we can apply a
+general framework to logical consistency based on conditional expressions,
+which follow simple evaluations of boolean statements. In other words, scholars
+may use validation functions that produce a set of `TRUE` or `FALSE` responses
+to assess the consistency of their datasets [@van2019data, 3]. 
 
 For instance, if a researcher measures the average population age and GDP per
 capita, the data should have no negative values or include zero. An `if`
@@ -151,10 +162,30 @@ statement can verify whether the observations conform to that rule:
 * IF `age` $\leq 0$ OR `gdp_per_capita` $\leq 0$ `== FALSE`
 * ELSE `== TRUE`
 
-Scholars can use similar validations functions to assess the quality of any
-variable. If no prior information on the true values exist, users can establish
-lower and upper bounds for the variable they describe [@ess2018methodology,
-67--73].
+Scholars can use similar validations functions to assess the logical
+consistency of any variable for which prior information is available. Users can
+also combine conditional statements and check the quality of related variables
+with a single function. 
+
+There are cases, however, that no exact information on the true values exist.
+But social scientists can still verify the consistency of their data using
+conditional rules. Instead of focusing on a particular boolean outcome,
+researchers should estimate upper and lower bounds for the variable they want
+to check. One way to do so is via Monte Carlo simulations. The
+@ess2018methodology [72] proposes a simple yet effective method to estimate
+logical consistency bounds. First, create a set of values that seems plausible
+according to the related literature. Second, add disturbances to the dataset by
+simulating cases with measurement error, missing values, mistakes in the
+data entry process, or other statistical issues that are common with that type
+of data. Then, apply the logical consistency test to the sample. Lastly, repeat
+this process several times to create a distribution from the simulated
+outcomes. This process yields the lower and upper bounds required for the
+dataset, assuming that the selected set correctly approximates the true values
+of the variable.
+
+Testing data with conditional expressions provide another benefit for
+researchers. 
+
 
 ## Step 3: Content Validity
 

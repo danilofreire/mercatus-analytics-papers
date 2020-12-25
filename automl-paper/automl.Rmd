@@ -7,15 +7,12 @@ fontsize: 12pt
 bibliography: references.bib
 biblio-style: apalike
 output:
-   pdf_document:
-     number_sections: true
-header-includes:
-   - \usepackage[UKenglish]{babel}
-   - \usepackage[UKenglish]{isodate}
-   - \usepackage{libertine}
-   - \usepackage[libertine]{newtxmath}
-   - \usepackage{inconsolata}
-   - \usepackage{setspace}
+  pdf_document:
+    citation_package: natbib
+    fig_caption: yes
+    number_sections: yes
+    keep_tex: no
+    template: ../automl-paper/article-template.latex
 ---
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
@@ -140,16 +137,16 @@ improve forecasting scores the most.
 
 ## AutoKeras
 
-`AutoKeras` [@jin2019auto] is an AutoML algorithm based on `Keras`
-[@chollet2015keras], an interface for Google's `TensorFlow` machine learning
-platform [@tensorflow2015]. `AutoKeras` focuses exclusively on deep neural
-networks, and it performs classification and regression tasks on images, texts,
-and tabular data. Neural networks require extensive tuning to increase
-prediction accuracy, but `AutoKeras` uses neural architectural search (NAS) to
-automatically optimise the network hyperparameters. In this sense, users can
-train complex deep learning algorithms with little to no machine learning
-experience. One only needs to write four lines of code to run a classification
-task in `AutoKeras`:
+`AutoKeras` is an AutoML algorithm based on `Keras` [@chollet2015keras], an
+interface for Google's `TensorFlow` machine learning platform
+[@tensorflow2015]. `AutoKeras` focuses exclusively on deep neural networks, and
+it performs classification and regression tasks on images, texts, and tabular
+data. Neural networks require extensive tuning to increase prediction accuracy,
+but `AutoKeras` uses neural architectural search (NAS) to automatically
+optimise the network hyperparameters. In this sense, users can train complex
+deep learning algorithms with little to no machine learning experience. One
+only needs to write four lines of code to run a classification task in
+`AutoKeras`:
 
 \vspace{.3cm}
 
@@ -253,7 +250,7 @@ model.fit(X_train, y_train)        # fit model
 print(model.score(X_test, y_test)) # print model evaluation
 ```
 
-Where $X$ is the matrix of covariates and $y$ is the response variable. `TPOT`
+Where $X$ is a matrix of covariates and $y$ is the response variable. `TPOT`
 has a `export` function that is useful for those who need to export the
 optimised model and deploy it in other settings. Users can also customise
 `TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s
@@ -620,8 +617,6 @@ like:
 knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/automl-paper/docker-ps.png")
 ```
 
-\newpage
-
 Where the first column indicates the container ID. In this case, it starts with
 `5051`. To copy the files to that specific container, just write the following
 lines in your terminal:
@@ -675,11 +670,11 @@ knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/automl-pap
 ```
 
 And that completes our tutorial. The image has been successfully uploaded to
-DockerHub, and researchers can download the file, along with the source script
-and data, with `docker pull danilofreire/mercatus-automl`. As we have seen,
-Docker offers a flexible and fully reproducible method to share machine
-learning models or other statistical analyses. It goes beyond current academic
-reproducibility practices and certifies the exact replication of the findings.
+DockerHub and researchers can download the file with `docker pull
+danilofreire/mercatus-automl`. As we have seen, Docker offers a flexible and
+fully reproducible method to share machine learning models or other statistical
+analyses. It goes beyond current academic reproducibility practices and
+certifies the exact replication of the findings.
 
 # Conclusion
 
@@ -705,7 +700,5 @@ labour-intensive tasks and focus on improving the predictive ability of their
 models. In sum, I hope AutoML becomes an important part of the machine learning
 toolkit, and that automated models help policy analysts to answer some of their
 most pressing questions.
-
-\newpage
 
 # References
