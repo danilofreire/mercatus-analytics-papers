@@ -165,7 +165,13 @@ statement can verify whether the observations conform to that rule:
 Scholars can use similar validations functions to assess the logical
 consistency of any variable for which prior information is available. Users can
 also combine conditional statements and check the quality of related variables
-with a single function. 
+with a single function. As an example, if a dataset contains information about
+the location of the subjects, such as city and street name, one can assume that
+the postal code is the same if the two values are identical [@van2019data, 12].
+In other terms:
+
+* IF `city`~`[i]`~ == `city`~`[j]`~ AND `street`~`[i]`~ == `street`~`[j]`~ 
+* THEN `postal`~`[i]`~ $\equiv$ `postal`~`[j]`~
 
 There are cases, however, that no exact information on the true values exist.
 But social scientists can still verify the consistency of their data using
@@ -173,18 +179,40 @@ conditional rules. Instead of focusing on a particular boolean outcome,
 researchers should estimate upper and lower bounds for the variable they want
 to check. One way to do so is via Monte Carlo simulations. The
 @ess2018methodology [72] proposes a simple yet effective method to estimate
-logical consistency bounds. First, create a set of values that seems plausible
-according to the related literature. Second, add disturbances to the dataset by
-simulating cases with measurement error, missing values, mistakes in the
-data entry process, or other statistical issues that are common with that type
-of data. Then, apply the logical consistency test to the sample. Lastly, repeat
-this process several times to create a distribution from the simulated
-outcomes. This process yields the lower and upper bounds required for the
-dataset, assuming that the selected set correctly approximates the true values
-of the variable.
+logical consistency bounds. First, create a set of values $S'$ that seems
+plausible according to the related literature. Second, add disturbances to the
+dataset $S'$ by simulating cases with measurement error, missing values,
+mistakes in the data entry process, or other statistical issues that are common
+with that type of data. This yields a dataset $S$. Then, apply the logical
+consistency test to $S$. Lastly, repeat this process several times, changing
+the number of wrong observations, to create a distribution of summary
+statistics from the simulated $S_n$ datasets. This process yields the lower and
+upper bounds required for the dataset, assuming that the $S'$ set correctly
+approximates the true values of the variable.
+
+While in the section I discuss how rules can be applied to new datasets, they
+may also provide interesting insights when used to evaluate existing data. One
+possible avenue for research is to compare whether certain conditional
+statements produce different outcomes in datasets that measure the same
+phenomena, such as level of democracy or changes in political regimes.
+Observations that do not conform to the rules should be contrasted and
+explained, and if that is case, imputed to credible values. Indeed,
+@dewaal2017imputation suggests that imputation methods that both preserve
+statistical properties of the variables and conform to rule restrictions are
+the best way to fill missing data, even if so far they are difficult to
+estimate.
 
 Testing data with conditional expressions provide another benefit for
-researchers. 
+researchers. Since logical rules can be defined in advance, they may be
+included in a preregistration plan. Registering the study design before data
+collection or analysis reduces the chances of "data dredging", cases in which
+researchers release only the analyses that support their hypotheses
+[@klein2018practical]. Preregistration increases the credibility of the
+findings and may be even submitted directly for publication in the form of
+registered reports [@chambers2013registered]. Journals can evaluate the
+research design before scholars know the results, and the manuscript's
+acceptance is independent of the final data. As of late 2020, 275 journals
+use registered reports as a regular or one-off submission option [@cos2020rr].
 
 
 ## Step 3: Content Validity
