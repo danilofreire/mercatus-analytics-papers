@@ -44,12 +44,12 @@ In this context, researchers have developed a series of tools to obtain, clean,
 and store data files. R and Python, two open source programming languages, have
 become the _de facto_ standards for downloading and manipulating data
 [@magoulas2020keyareas; @perkel2018jupyter]. Reproducible scripts are now a
-common feature in academic studies, allowing researchers to easily share and
-verify their analyses [@hoffler2017replication; @key2016we]. Scholars can also
-store their materials in public repositories, such as
-[GitHub](http://github.com) or the [Harvard
-Dataverse](https://dataverse.harvard.edu), which guarantee that academic
-materials will be preserved for future reference [@king2007introduction].
+common feature in academic studies, so researchers can easily share and verify
+their analyses [@hoffler2017replication; @key2016we]. Scholars can also store
+data and code in public repositories, such as [GitHub](http://github.com) or
+the [Harvard Dataverse](https://dataverse.harvard.edu), which guarantee that
+academic materials will be preserved for future reference
+[@king2007introduction].
 
 Although there has been significant progress in data analytics, data validation
 techniques have received little attention in academia. Data validation is
@@ -58,23 +58,23 @@ is a member of a set of acceptable combinations_" [@ess2018methodology, 8]. One
 reason for this omission is that data quality procedures are not as
 standardised as other statistical methods, so users often need to create _ad
 hoc_ semantic rules to compile new data [@mcmann2016strategies]. Moreover,
-scholars should engage with several sources of information to establish
-conceptual validity, which requires unique ways to aggregate abstract concepts
-into a set of plausible numeric values [@munck2002conceptualizing;
-@schedler2012judgment].
+scholars have to engage with several sources of information to establish
+conceptual validity and translate abstract concepts into plausible numeric
+values [@munck2002conceptualizing; @schedler2012judgment].
 
 In this paper, I present five steps to help scholars improve their data
 validation process. My idea is to offer a short check-list that is useful to
 both data developers and reviewers, so all parties involved in the validation
 procedures have a common understanding of what constitutes good practices in
-the field. My recommendations are based on the standards set by Eurostat, an
+the field. My suggestions are based on the standards set by Eurostat, an
 agency that provides statistical information to the European Union (EU), and on
-recent work by @mcmann2016strategies and @schedler2012judgment. I discuss how
-to create testable validation functions, how to increase construct validity,
-and how to incorporate qualitative knowledge to statistical measurements. I
-present the concepts according to their level of abstraction, with the last
-three demanding more theorisation than the first two, and I provide practical
-examples on how scholars can add the suggestions below to their work.
+recommendations by @gerring2001social, @mcmann2016strategies, and
+@schedler2012judgment. I discuss how to create testable validation functions,
+how to increase construct validity, and how to incorporate qualitative
+knowledge to statistical measurements. I present the concepts according to
+their level of abstraction, with the last three demanding more theorisation
+than the first two, and I provide practical examples on how scholars can add
+the suggestions below to their work.
 
 # Five Steps Towards Better Data Validation Processes
 
@@ -114,22 +114,21 @@ users should store strings as character vectors, numbers as numeric values
 `FALSE`), and categorical variables as factors [@ess2018methodology, 10].
 Whenever possible, save tabular data in pure text format as any software can
 read it. Comma-separated values files (`.csv`) have wide support across many
-operating systems and can be easily opened in Excel, Python, and R with no
+operating systems and can be easily opened in Excel, R, and Python with no
 errors.
 
 Variables containing textual data or times and dates need special attention as
 they are prone to encoding issues. There are dozens of character encoding
 standards, but a recent survey shows that Unicode Transformation Format --
-8-bit (UTF-8) is used in about 96% of all internet websites
-[@w3techs2020encoding]. In this sense, scholars should use UTF-8 to store text
-variables as it is widely accessible. UTF-8 is able to convert characters from
-many alphabets and its most recent version also stores emojis. Regarding times
-and dates, users are advised to record time using the ISO 8601 standard ISO. It
-uses the Gregorian calendar and a 24-h timescale [@van2018statistical, 52].
-Dates are stored in the `YYYY-MM-DD` format, in which `YYYY` represents the
-year, `MM` the month, and `DD` the day. The ISO standard suggests that time of
-day should be expressed as `hh:mm:ss`, for hour, minute, and second,
-respectively.
+8-bit (UTF-8) is used on 96% of all internet websites [@w3techs2020encoding].
+In this sense, scholars should use UTF-8 to store text variables as it is
+widely accessible. UTF-8 is able to convert characters from many alphabets and
+its most recent version also stores emojis. Regarding times and dates, scholars
+are advised to record time in the ISO 8601 standard ISO. The ISO standard uses
+the Gregorian calendar and a 24-h timescale [@van2018statistical, 52]. Dates
+are stored in the `YYYY-MM-DD` format, in which `YYYY` represents the year,
+`MM` the month, and `DD` the day. Time of day should be expressed as
+`hh:mm:ss`, for hour, minute, and second, respectively.
 
 Although not strictly required, it is recommended that researchers use version
 control to keep track of changes and ensure the technical consistency of their
@@ -146,8 +145,8 @@ risk-free. For more information about Git, please visit <https://git-scm.com>.
 
 ## Step 2: Logical Consistency
 
-The second step involves the elaboration of domain-specific validation rules.
-In contrast with technical integrity, logical consistency requires rules that
+The second step involves the elaboration of logical validation rules. In
+contrast with technical integrity, logical consistency requires rules that
 incorporate _a priori_ knowledge from a particular scientific field, so logical
 validation methods are domain-specific by design. However, we can apply a
 general framework to logical consistency based on conditional expressions,
@@ -162,33 +161,33 @@ statement can verify whether the observations conform to that rule:
 * IF `age` $\leq 0$ OR `gdp_per_capita` $\leq 0$ `== FALSE`
 * ELSE `== TRUE`
 
-Scholars can use similar validations functions to assess the logical
-consistency of any variable for which prior information is available. Users can
+Scholars can use similar validations functions to check the logical
+validity of any variable for which prior information is available. Users can
 also combine conditional statements and check the quality of related variables
 with a single function. As an example, if a dataset contains information about
 the location of the subjects, such as city and street name, one can assume that
 the postal code is the same if the two values are identical [@van2019data, 12].
-In other terms:
+Translating the rule into conditional expressions, the code would be:
 
 * IF `city`~`[i]`~ == `city`~`[j]`~ AND `street`~`[i]`~ == `street`~`[j]`~ 
 * THEN `postal`~`[i]`~ $\equiv$ `postal`~`[j]`~
 
-There are cases, however, that no exact information on the true values exist.
-But social scientists can still verify the consistency of their data using
-conditional rules. Instead of focusing on a particular boolean outcome,
+There are cases, however, for which no exact information on the true values
+exist. But social scientists can still verify the consistency of their data
+using conditional rules. Instead of focusing on a particular boolean outcome,
 researchers should estimate upper and lower bounds for the variable they want
 to check. One way to do so is via Monte Carlo simulations. The
-@ess2018methodology [72] proposes a simple yet effective method to estimate
-logical consistency bounds. First, create a set of values $S'$ that seems
-plausible according to the related literature. Second, add disturbances to the
-dataset $S'$ by simulating cases with measurement error, missing values,
-mistakes in the data entry process, or other statistical issues that are common
-with that type of data. This yields a dataset $S$. Then, apply the logical
-consistency test to $S$. Lastly, repeat this process several times, changing
-the number of wrong observations, to create a distribution of summary
-statistics from the simulated $S_n$ datasets. This process yields the lower and
-upper bounds required for the dataset, assuming that the $S'$ set correctly
-approximates the true values of the variable.
+@ess2018methodology [72] proposes an easy yet effective method to estimate
+logical consistency bounds for a given variable. First, create a set of values
+$S$ that seems plausible according to the related literature. Second, add
+disturbances to the dataset $S$ by simulating cases with measurement error,
+missing values, mistakes in the data entry process, or other statistical issues
+that are common to that type of data. This yields a variable $S'$. Then, apply
+the consistency test to $S'$. In the final step, repeat this process several
+times and change the number of wrong observations to create a distribution of
+rule statistics from the simulated $S'$~_n_~ variables. This method produces
+the lower and upper bounds required for the data, assuming that $S$
+correctly approximates the true values of the chosen variable.
 
 While in the section I discuss how rules can be applied to new datasets, they
 may also provide interesting insights when used to evaluate existing data. One
@@ -214,24 +213,69 @@ research design before scholars know the results, and the manuscript's
 acceptance is independent of the final data. As of late 2020, 275 journals
 use registered reports as a regular or one-off submission option [@cos2020rr].
 
-
 ## Step 3: Content Validity
 
-Content validity assessment evaluates whether the variables correspond to the
-abstract theoretical concept it intends to measure. This is the hardest
-validation check and social scientists have written extensively about the
-topic. Here I follow @gerring2001social and suggest that researchers check if
-their variables meet six criteria: resonance, domain, differentiation,
-fecundity, consistency, and causal utility. Resonance means that the variable
-reflects an appropriate understanding of the concept. Domain considers when
-relevant parties agree with the concept being measured. Differentiation
-indicates that the variable should exclude information that do not conform to
-the concept of interest. Similarly, fecundity indicates that the variable is
-parsimonious and include only the necessary information relevant to each
-concept. Consistency is an attribute that signals whether a concept retain its
-validity across different settings. Finally, causal utility refers to the idea
-that the measure is useful to particular areas of study, which the authors
-should enumerate when constructing their data.
+Content validity refers to whether the variables correspond to the abstract
+theoretical concept it intends to measure. This is a difficult task as there
+are no hard-and-fast rules on how to check this measure of data validity. Here
+I follow Gerring [-@gerring1999makes; -@gerring2001social] and suggest that
+researchers should check if their variables meet six criteria: resonance,
+domain, differentiation, fecundity, consistency, and causal utility. I explain
+each of them in further detail below.
+
+*Resonance* means that the variable name reflects an appropriate understanding
+of the concept. A clear definition is very often a simple word that is already
+is use in common language, and that immediately evokes an intuitive
+understanding of the idea the authors are trying to convey. They are akin to
+mnemonic devices, in a way that readers can remember what the variable means
+long after they see it [@gerring1999makes, 370]. Terms like "social capital" or
+"civic culture" might be difficult to measure, but they do resonate with 
+the general public [@bjornskov2013social].
+
+*Domain* considers whether relevant parties agree with the concept being
+measured. The idea of domain is similar to that of resonance, but it describes
+how particular audiences, mainly area specialists, interpret the concept one
+intends to describe [@mcmann2016strategies, 9]. For example, the domain of
+"democracy" as measured by political indices may differ substantially from what
+the lay community generally understands as the "government of the people"
+[@munck2002conceptualizing]. In that respect, the concept should embrace as
+many domains as possible, although it should strive first for internal validity
+and consistency [@tortola2017clarifying, 241]. Thus, it is essential that the
+researcher has a firm idea of what are the main characteristics of a given
+concept for their target public.
+
+*Differentiation* indicates that the variable should exclude information that
+do not conform to the concept of interest. In other words, it entails that one
+should find what makes a concept distinct from other related terms, and the
+sharper those boundaries are, the stronger the validity of the concept. As
+@gerring1999makes [375] notes, any good definition of "state" has to single out
+what is particular to the state and which does not appear in other forms of
+social organisation, such as tribes or empires. Many concepts in political
+science and economics, such as "conflict" or "utility", cause confusion because
+of "conceptual stretch", that is, "[...] an unreflecting application of
+concepts to new issues" that do not conform to the original formulation
+[@carlsson2017policy, 151; @sartori1970concept].
+
+Similarly, *fecundity* indicates that the variable is parsimonious and include
+only the necessary information relevant to the concept. It refines the
+differentiation attribute and highlights that it is not only required for
+scholars to affirm what the concept is, but also to show what *it is not*
+[@gerring2001social, 92]. This exercise involves counterfactual thinking, and
+it is not always clear which unrealised outcome scholars should focus on. One
+suggestion may be to start with competing definitions or with characteristics
+that can conflate the original idea with similar behaviour. For instance, a
+corruption variable should exclude private benefits that do not originate from
+someone's governmental position [@mcmann2016strategies, 10].
+
+*Consistency* is an attribute that signals whether a concept retain its
+validity across different settings [@mcmann2016strategies, 12]. An indicator of
+liberal democracy should be able to explain not only Western regimes, but be
+able to identify liberal traits in countries that do not share a similar
+background and retain its validity over time. 
+
+Lastly, *causal utility* refers to the idea that the measure is useful to
+specific areas of study, which the authors should enumerate when constructing
+their data.
 
 ## Step 4: Data Generation Validity
 
