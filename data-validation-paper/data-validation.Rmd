@@ -100,7 +100,7 @@ operations, such as pivoting tables, splitting or combining columns, or
 filtering values. Please refer to @wickham2016r4ds for more information on how
 to clean messy data. 
 
-```{r, echo=FALSE, fig.cap="A tidy dataset. Source: Wickham and Grolemund (2016).", out.width = "80%", fig.align="center"}
+```{r, cache=TRUE, echo=FALSE, fig.cap="A tidy dataset. Source: Wickham and Grolemund (2016).", out.width = "80%", fig.align="center"}
 knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/data-validation-paper/tidy.png")
 ```
 
@@ -215,22 +215,22 @@ use registered reports as a regular or one-off submission option [@cos2020rr].
 
 ## Step 3: Content Validity
 
-Content validity refers to whether the variables correspond to the abstract
-theoretical concept it intends to measure. This is a difficult task as there
-are no hard-and-fast rules on how to check this measure of data validity. Here
-I follow Gerring [-@gerring1999makes; -@gerring2001social] and suggest that
-researchers should check if their variables meet six criteria: resonance,
-domain, differentiation, fecundity, consistency, and causal utility. I explain
-each of them in further detail below.
+Content validity refers to whether the variables correspond to the theoretical
+concepts they intend to measure. This is a difficult task as there are no
+hard-and-fast rules on how to map concepts into values. Here I follow Gerring
+[-@gerring1999makes; -@gerring2001social] and suggest that researchers should
+check if their variables meet six criteria: resonance, domain, differentiation,
+fecundity, consistency, and causal utility. I explain each of them in further
+detail below.
 
-*Resonance* means that the variable name reflects an appropriate understanding
-of the concept. A clear definition is very often a simple word that is already
-is use in common language, and that immediately evokes an intuitive
-understanding of the idea the authors are trying to convey. They are akin to
-mnemonic devices, in a way that readers can remember what the variable means
-long after they see it [@gerring1999makes, 370]. Terms like "social capital" or
-"civic culture" might be difficult to measure, but they do resonate with 
-the general public [@bjornskov2013social].
+*Resonance* means that the variable name brings to mind the core idea of a
+concept. A clear definition is one that includes a simple word that is used in
+common language, and that quickly conveys the point the authors are trying to
+make. Terms that resonate are akin to mnemonic devices, something that helps
+readers to remember what the variable means long after they see it
+[@gerring1999makes, 370]. Concepts like "social capital" or "civic culture"
+might be difficult to measure, but they do invoke an intuitive understanding of
+the concepts authors refer to [@bjornskov2013social].
 
 *Domain* considers whether relevant parties agree with the concept being
 measured. The idea of domain is similar to that of resonance, but it describes
@@ -241,48 +241,57 @@ the lay community generally understands as the "government of the people"
 [@munck2002conceptualizing]. In that respect, the concept should embrace as
 many domains as possible, although it should strive first for internal validity
 and consistency [@tortola2017clarifying, 241]. Thus, it is essential that the
-researcher has a firm idea of what are the main characteristics of a given
-concept for their target public.
+researcher has a firm idea of what his or her target public expects from the
+concept.
 
-*Differentiation* indicates that the variable should exclude information that
-do not conform to the concept of interest. In other words, it entails that one
-should find what makes a concept distinct from other related terms, and the
-sharper those boundaries are, the stronger the validity of the concept. As
-@gerring1999makes [375] notes, any good definition of "state" has to single out
-what is particular to the state and which does not appear in other forms of
-social organisation, such as tribes or empires. Many concepts in political
-science and economics, such as "conflict" or "utility", cause confusion because
-of "conceptual stretch", that is, "[...] an unreflecting application of
-concepts to new issues" that do not conform to the original formulation
-[@carlsson2017policy, 151; @sartori1970concept].
+*Differentiation* indicates that the variable should include the unique aspects
+of a given concept. In other words, it entails that one should find what makes
+a concept distinct from related terms, and the sharper those boundaries are,
+the stronger the validity of the concept. As @gerring1999makes [375] notes, any
+good definition of "state" has to single out what characteristics are
+particular to states and do not appear in other forms of social organisation,
+such as tribes or empires. Many concepts in the social sciences cause confusion
+precisely because they often include traits that not exclusive to these
+categories. For instance, if one defines "armed conflict" as "the use of force
+by the state or civilians against other groups", it is not possible to
+differentiate such cases from episodes of lynchings or genocide, in which one
+party attacks the other without retaliation. 
 
-Similarly, *fecundity* indicates that the variable is parsimonious and include
-only the necessary information relevant to the concept. It refines the
+Similarly, *fecundity* indicates that the variable is parsimonious and exclude
+all information that is not related to the concept. It refines the
 differentiation attribute and highlights that it is not only required for
 scholars to affirm what the concept is, but also to show what *it is not*
 [@gerring2001social, 92]. This exercise involves counterfactual thinking, and
 it is not always clear which unrealised outcome scholars should focus on. One
-suggestion may be to start with competing definitions or with characteristics
-that can conflate the original idea with similar behaviour. For instance, a
-corruption variable should exclude private benefits that do not originate from
-someone's governmental position [@mcmann2016strategies, 10].
+suggestion may be to start with competing definitions and remove
+characteristics that conflate the original concept with similar behaviours. For
+instance, a corruption variable should exclude private benefits that do not
+originate from someone's governmental position [@mcmann2016strategies, 10].
 
 *Consistency* is an attribute that signals whether a concept retain its
-validity across different settings [@mcmann2016strategies, 12]. An indicator of
-liberal democracy should be able to explain not only Western regimes, but be
-able to identify liberal traits in countries that do not share a similar
-background and retain its validity over time. 
+validity across different settings [@mcmann2016strategies, 11]. An indicator of
+liberal democracy should be able to explain not only Western regimes, but to
+identify liberal traits in countries that do not share a similar background and
+retain its consistency over time. In this sense, the variable should
+preferably measure sufficient attributes of the concept, which can be easily
+identified in other cases.
 
-Lastly, *causal utility* refers to the idea that the measure is useful to
-specific areas of study, which the authors should enumerate when constructing
-their data.
+Lastly, *causal utility* means that researchers are able to test hypotheses in
+which the concept described is either the main cause or the expected effect
+[@gerring1999makes, 367]. In most cases, concepts designed to be employed as
+independent variables require fewer attributes to be causally useful than those
+created to be dependent variables [@gerring2011social, 130]. While it is hard
+to ensure that a concept is completely exogenous from other theoretical
+constructs, authors should avoid a definition that includes known confounders
+connect the concept to background factors [@gerring2011social, 130].
 
 ## Step 4: Data Generation Validity
 
-This steps corresponds to the relationship between the concepts the researcher
+This step corresponds to the relationship between the concepts the researcher
 wants to translate into quantifiable information and the data generating
 process. More specifically, scholars have to be aware that their data
 generating process may be biased or unreliable [@mcmann2016strategies, 12].
+
 With regards to bias, scholars should address whether coders may have
 inadvertently introduced their own views into the data collection stage.
 If the data generating process is original, it is recommended to verify
