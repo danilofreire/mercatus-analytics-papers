@@ -218,10 +218,10 @@ use registered reports as a regular or one-off submission option [@cos2020rr].
 Content validity refers to whether the variables correspond to the theoretical
 concepts they intend to measure. This is a difficult task as there are no
 hard-and-fast rules on how to map concepts into values. Here I follow Gerring
-[-@gerring1999makes; -@gerring2001social] and suggest that researchers should
-check if their variables meet six criteria: resonance, domain, differentiation,
-fecundity, consistency, and causal utility. I explain each of them in further
-detail below.
+[-@gerring1999makes; -@gerring2001social; -@gerring2011social] and suggest that
+researchers should check if their variables meet six criteria: resonance,
+domain, differentiation, fecundity, consistency, and causal utility. I explain
+each of them in further detail below.
 
 *Resonance* means that the variable name brings to mind the core idea of a
 concept. A clear definition is one that includes a simple word that is used in
@@ -254,8 +254,7 @@ such as tribes or empires. Many concepts in the social sciences cause confusion
 precisely because they often include traits that not exclusive to these
 categories. For instance, if one defines "armed conflict" as "the use of force
 by the state or civilians against other groups", it is not possible to
-differentiate such cases from episodes of lynchings or genocide, in which one
-party attacks the other without retaliation. 
+differentiate such cases from episodes of lynchings or genocide.
 
 Similarly, *fecundity* indicates that the variable is parsimonious and exclude
 all information that is not related to the concept. It refines the
@@ -288,20 +287,50 @@ connect the concept to background factors [@gerring2011social, 130].
 ## Step 4: Data Generation Validity
 
 This step corresponds to the relationship between the concepts the researcher
-wants to translate into quantifiable information and the data generating
-process. More specifically, scholars have to be aware that their data
-generating process may be biased or unreliable [@mcmann2016strategies, 12].
+wants to translate into numeric values and the data generating process. More
+specifically, scholars need to be aware that their data generating process may
+be biased or unreliable [@mcmann2016strategies, 12]. Problems may arise either
+when gathering new data or using secondary sources. Here I focus on two common
+issues, low intercoder reliability and data aggregation challenges.
 
-With regards to bias, scholars should address whether coders may have
-inadvertently introduced their own views into the data collection stage.
-If the data generating process is original, it is recommended to verify
-intercoder agreement by reporting Cohen's Kappa or Krippendorff's Alpha
-[@lombard2002content]. When the data come from
-secondary sources and the scholar wants to combine them into an index, it is
-good practice to describe how aggregation rules may change the results. One
-suggestion is to use Bayesian factor analysis to merge the low-level
-indicators, as Bayesian inference adds uncertainty to the resulting index
-[@mcmann2016strategies, 15]. 
+With regards to novel datasets, scholars should address whether coders have
+inadvertently introduced their own views during the data collection stage.
+Although intercoder reliability does not guarantee that the data are correct,
+disagreements between coders raise a red flag about the validity of the
+recorded values [@kolbe1991content, 248]. A first step is to calculate
+intercoder agreement using two popular statistics, Cohen's Kappa and
+Krippendorff's Alpha [@lombard2002content]. While these tests have their
+limitations, they are easy to calculate and are available in many statistical
+languages. R users have the `irr` package [@gamer2019irr] that provides
+functions to estimate those statistics for any dataset. Scholars are also
+expected to report the results of these tests in their materials, as well as a
+justification for the minimum acceptable level of intercoder reliability they
+have adopted [@lombard2002content, 600].
+
+There are a few recommendations on how to proceed when intercoder agreement is
+low. First, provide training and clear guidelines to the raters. Allowing them
+to discuss and explain to each other where they disagree can also bring
+substantial increases to intercoder reliability [@o2020intercoder]. Second, if
+time allows, implement multiple coding rounds and modify the coding frame
+accordingly until intercoder agreement reaches a desired level
+[@macphail2016process]. A final suggestion would be to apply item-response
+theory (IRT) models to convert ordinal data to latent variables, as they allow
+for intercoder variation in skill and in perceived scale differences
+[@marquardt2018irt].
+
+When the data come from secondary sources and the scholar wants to combine them
+into an index, it is good practice to describe how aggregation rules may change
+the results. Loss of information is inevitable when aggregating attributes into
+an index, so scholars need to first clarify which of the attributes will be
+combined and for what reason. Moreover, one can aggregate features with
+multiple functional forms. Aggregation rules should be theoretically driven,
+and it is unclear whether additivity, the default method for merging low-level
+attributes, is the appropriate rule for every case [@munck2002conceptualizing,
+24]. 
+
+One suggestion is to use Bayesian factor analysis to merge the
+low-level indicators, as Bayesian inference adds uncertainty to the resulting
+index [@mcmann2016strategies, 15]. 
 
 ## Step 5: Convergent Validity
 
