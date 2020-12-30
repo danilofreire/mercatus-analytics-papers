@@ -20,9 +20,6 @@ output:
 r <- getOption("repos")
 r["CRAN"] <- "https://cran.rstudio.com/"
 options(repos = r)
-if (!require("kableExtra")) {
-    install.packages("kableExtra")
-}
 ```
 
 [^info]: Independent researcher,
@@ -322,15 +319,25 @@ When the data come from secondary sources and the scholar wants to combine them
 into an index, it is good practice to describe how aggregation rules may change
 the results. Loss of information is inevitable when aggregating attributes into
 an index, so scholars need to first clarify which of the attributes will be
-combined and for what reason. Moreover, one can aggregate features with
-multiple functional forms. Aggregation rules should be theoretically driven,
-and it is unclear whether additivity, the default method for merging low-level
-attributes, is the appropriate rule for every case [@munck2002conceptualizing,
-24]. 
+combined and for what reason. This is where theory comes in, as aggregation
+rules should be theoretically motivated. For instance, it is unclear whether
+additivity, the default method for merging low-level attributes, is the best
+aggregation rule for most indices, or why scholars do not weight their
+attributes more often [@munck2002conceptualizing, 24]. As long as the moves are
+theoretically consistent, researchers can use very different methods for index
+construction.
 
-One suggestion is to use Bayesian factor analysis to merge the
-low-level indicators, as Bayesian inference adds uncertainty to the resulting
-index [@mcmann2016strategies, 15]. 
+There are cases, nevertheless, where one has no _a priori_ knowledge about what
+features to include in an aggregate measure. It can either be because the
+current literature offers little guidance on the topic or because features are
+multicollinear. One suggestion is to use Bayesian factor analysis (BFA) as a
+technique to model latent traits [@conti2014bayesian]. While researchers have
+long used principal component analysis (PCA) to reduce the dimensionality of a
+dataset, BFA has several advantages over PCA. BFA propagates uncertainty in the
+estimates, allows for correlated factors and control variables, and can either
+decide automatically or let the users include as many factors as they see fit
+into the index. The R package `BayesFM` [@piatek2020bayesfm] performs the
+analysis described here. 
 
 ## Step 5: Convergent Validity
 
@@ -352,11 +359,23 @@ validation rule set as follows:
 
 The example shows how researchers can integrate _a priori_ information to their
 estimates. Authors can select the case studies they want to analyse using
-different criteria, such as to maximise variation, to evaluate a typical case,
-to understand outliers, and so on. I refer the readers to @seawright2008case
-for a comprehensive review of case selection methodologies.
+different criteria. @seawright2008case offer an interesting comparison between
+seven case selection methods and the corresponding large-_N_ statistical
+reasoning behind the choices. The first method is selecting the _typical_ case,
+one that best represents the intended relationship. This is the equivalent of
+analysing low-residual cases, those which are very close to the fitted
+statistical curve. Authors can choose _diverse_ cases to compare if they are
+interested in obtaining a range for their variables, or points in an ordinal
+scale. Third, _extreme_ cases describe observations that lie in the tails of
+the distribution. _Deviant_ cases are akin to outliers in statistical
+modelling. _Influential_ cases are those which are often not representative,
+but have a particular effect caused by independent variables. The last two
+cases are similar to those I have discussed above, _most similar_, which
+parallels matching techniques in large-_N_ studies, and _most different_, its
+opposite. Please refer to @seawright2008case for more information on case
+selection strategies.
 
-Lastly, authors should explain the reasons behind eventual divergences between
+Finally, authors should explain the reasons behind eventual divergences between
 their measurements and current theoretical expectations. Validation functions
 have the advantage of being transparent to referees and editors, thus making
 the assumptions explicit and allowing reviewers to assess the work using
@@ -364,6 +383,37 @@ logical statements. That said, it is recommended that authors investigate why
 outliers occur and test whether coder characteristics or measurement
 construction explain these differences. @mcmann2016strategies [p. 27-36]
 provide an empirical case study on how to assess convergent validity.
+
+# Conclusion
+
+Data validation is a crucial yet undertheorised topic in the social sciences.
+While estimation methods have made significant progress over the last decades,
+data validation procedures remain largely absent from university courses and
+academic textbooks. This is at odds with the famous saying that "80% of data
+analysis is spent on the process of cleaning and preparing the data"
+[@wickham2014tidy, 1] and with the growing number of datasets social scientists
+have amassed recently. My goal in this short paper was not to provide an
+abstract view of the data validation process, but to offer a few pieces of
+practical advice that social scientists may find useful when creating a new
+dataset or assessing the properties of existing ones. I divided the data
+validation process in five steps, from technical consistency to convergent
+validity, and added reading suggestions for authors who would like to read more
+about the topics discussed here.
+
+I encourage authors to pay special attention to issues of logical consistency
+and content validity, which are particularly difficult parts of the data
+validation process. Translating concepts into numeric values is more art than
+science, even more so in areas where many foundational ideas remain contested.
+Thus, careful theoretical considerations are key to better measurement. Another
+important part of the data validation process is reproducibility. All steps of
+the data collection process should be documented and shared along with the
+final results. Reproducible research leads to timely feedback, quality reviews,
+and stronger academic collaborations, so scholars have an incentive to adopt
+reproducible methods in their work. Computer science and its many successful
+open source projects provide good evidence in favour of greater research
+transparency. As stated by Eric Raymond [-@raymond2001cathedral, 30], a
+software developer, "given enough eyeballs, all bugs are shallow". Maybe the
+same is true in our discipline.
 
 \newpage
 
