@@ -88,7 +88,7 @@ can analyse the data as soon as they receive them.
 The computer science literature has some important suggestions in this regard.
 First, data should be "tidy", that is, in a format where each column represents
 one variable, each row represents one observation, and each observational unit
-forms a table [@wickham2014tidy, 4]. Although the suggestions seem simple,
+forms a table [@wickham2014tidy, 4]. Although the definition seems intuitive,
 scholars sometimes break these rules when building a new data. It is not
 uncommon to see multiple variables stored as a single column (e.g., race and
 gender together) or one variable divided into many columns (e.g., one column
@@ -118,14 +118,14 @@ Variables containing textual data or times and dates need special attention as
 they are prone to encoding issues. There are dozens of character encoding
 standards, but a recent survey shows that Unicode Transformation Format --
 8-bit (UTF-8) is used on 96% of all internet websites [@w3techs2020encoding].
-In this sense, scholars should use UTF-8 to store text variables as it is
-widely accessible. UTF-8 is able to convert characters from many alphabets and
-its most recent version also stores emojis. Regarding times and dates, scholars
-are advised to record time in the ISO 8601 standard ISO. The ISO standard uses
-the Gregorian calendar and a 24-h timescale [@van2018statistical, 52]. Dates
-are stored in the `YYYY-MM-DD` format, in which `YYYY` represents the year,
-`MM` the month, and `DD` the day. Time of day should be expressed as
-`hh:mm:ss`, for hour, minute, and second, respectively.
+In this sense, scholars should use UTF-8 to store text variables as it
+currently is the world's most popular text encoding. UTF-8 is able to convert
+characters from many alphabets and its recent version also stores emojis.
+Regarding times and dates, scholars are advised to record time in the ISO 8601
+standard ISO. The ISO standard uses the Gregorian calendar and a 24-h timescale
+[@van2018statistical, 52]. Dates are stored in the `YYYY-MM-DD` format, in
+which `YYYY` represents the year, `MM` the month, and `DD` the day. Time of day
+should be expressed as `hh:mm:ss`, for hour, minute, and second, respectively.
 
 Although not strictly required, it is recommended that researchers use version
 control to keep track of changes and ensure the technical consistency of their
@@ -142,14 +142,14 @@ risk-free. For more information about Git, please visit <https://git-scm.com>.
 
 ## Step 2: Logical Consistency
 
-The second step involves the elaboration of logical validation rules. In
-contrast with technical integrity, logical consistency requires rules that
-incorporate _a priori_ knowledge from a particular scientific field, so logical
-validation methods are domain-specific by design. However, we can apply a
-general framework to logical consistency based on conditional expressions,
-which follow simple evaluations of boolean statements. In other words, scholars
-may use validation functions that produce a set of `TRUE` or `FALSE` responses
-to assess the consistency of their datasets [@van2019data, 3]. 
+The second step involves the elaboration of logical validation rules to assess
+the consistency of recorded values. In contrast with technical integrity,
+logical consistency requires _a priori_ knowledge from a particular scientific
+field, so these validation methods are domain-specific by design. However,
+these specific rules can be evaluated using a general framework based on
+boolean statements. In other words, scholars may use validation functions that
+produce a set of `TRUE` or `FALSE` responses to check whether the variables are
+in line with their theoretical expectations [@van2019data, 3]. 
 
 For instance, if a researcher measures the average population age and GDP per
 capita, the data should have no negative values or include zero. An `if`
@@ -164,7 +164,7 @@ also combine conditional statements and check the quality of related variables
 with a single function. As an example, if a dataset contains information about
 the location of the subjects, such as city and street name, one can assume that
 the postal code is the same if the two values are identical [@van2019data, 12].
-Translating the rule into conditional expressions, the code would be:
+Translating the rules into conditional expressions, the code would be:
 
 * IF `city`~`[i]`~ == `city`~`[j]`~ AND `street`~`[i]`~ == `street`~`[j]`~ 
 * THEN `postal`~`[i]`~ $\equiv$ `postal`~`[j]`~
@@ -201,7 +201,7 @@ estimate.
 Testing data with conditional expressions provide another benefit for
 researchers. Since logical rules can be defined in advance, they may be
 included in a preregistration plan. Registering the study design before data
-collection or analysis reduces the chances of "data dredging", cases in which
+collection or analysis reduces the chances of "data dredging", where
 researchers release only the analyses that support their hypotheses
 [@klein2018practical]. Preregistration increases the credibility of the
 findings and may be even submitted directly for publication in the form of
@@ -221,13 +221,13 @@ domain, differentiation, fecundity, consistency, and causal utility. I explain
 each of them in further detail below.
 
 *Resonance* means that the variable name brings to mind the core idea of a
-concept. A clear definition is one that includes a simple word that is used in
-common language, and that quickly conveys the point the authors are trying to
-make. Terms that resonate are akin to mnemonic devices, something that helps
-readers to remember what the variable means long after they see it
-[@gerring1999makes, 370]. Concepts like "social capital" or "civic culture"
-might be difficult to measure, but they do invoke an intuitive understanding of
-the concepts authors refer to [@bjornskov2013social].
+concept. A good name is one that includes a simple word that is used in common
+language and quickly conveys the point the authors are trying to make. Terms
+that resonate are akin to mnemonic devices, something that helps readers to
+remember what the variable means long after they see it [@gerring1999makes,
+370]. Concepts like "social capital" or "civic culture" might be difficult to
+measure, but they do invoke an intuitive understanding of the concepts authors
+refer to [@bjornskov2013social].
 
 *Domain* considers whether relevant parties agree with the concept being
 measured. The idea of domain is similar to that of resonance, but it describes
@@ -244,11 +244,11 @@ concept.
 *Differentiation* indicates that the variable should include the unique aspects
 of a given concept. In other words, it entails that one should find what makes
 a concept distinct from related terms, and the sharper those boundaries are,
-the stronger the validity of the concept. As @gerring1999makes [375] notes, any
-good definition of "state" has to single out what characteristics are
+the stronger the validity of the concept. As @gerring1999makes [375] notes, a
+useful definition of "state" has to single out what characteristics are
 particular to states and do not appear in other forms of social organisation,
 such as tribes or empires. Many concepts in the social sciences cause confusion
-precisely because they often include traits that not exclusive to these
+precisely because they include traits that are not exclusive to these
 categories. For instance, if one defines "armed conflict" as "the use of force
 by the state or civilians against other groups", it is not possible to
 differentiate such cases from episodes of lynchings or genocide.
@@ -264,7 +264,7 @@ characteristics that conflate the original concept with similar behaviours. For
 instance, a corruption variable should exclude private benefits that do not
 originate from someone's governmental position [@mcmann2016strategies, 10].
 
-*Consistency* is an attribute that signals whether a concept retain its
+*Consistency* is an attribute that signals whether a concept retains its
 validity across different settings [@mcmann2016strategies, 11]. An indicator of
 liberal democracy should be able to explain not only Western regimes, but to
 identify liberal traits in countries that do not share a similar background and
@@ -284,11 +284,12 @@ connect the concept to background factors [@gerring2011social, 130].
 ## Step 4: Data Generation Validity
 
 This step corresponds to the relationship between the concepts the researcher
-wants to translate into numeric values and the data generating process. More
-specifically, scholars need to be aware that their data generating process may
-be biased or unreliable [@mcmann2016strategies, 12]. Problems may arise either
+wants to translate into numeric values and the data generating process. In
+particular, scholars need to be aware that their data generating process may be
+biased or unreliable [@mcmann2016strategies, 12]. Problems may arise either
 when gathering new data or using secondary sources. Here I focus on two common
-issues, low intercoder reliability and data aggregation challenges.
+threats to data generation validity, low intercoder reliability and data
+aggregation challenges.
 
 With regards to novel datasets, scholars should address whether coders have
 inadvertently introduced their own views during the data collection stage.
@@ -297,8 +298,8 @@ disagreements between coders raise a red flag about the validity of the
 recorded values [@kolbe1991content, 248]. A first step is to calculate
 intercoder agreement using two popular statistics, Cohen's Kappa and
 Krippendorff's Alpha [@lombard2002content]. While these tests have their
-limitations, they are easy to calculate and are available in many statistical
-languages. R users have the `irr` package [@gamer2019irr] that provides
+limitations, they are easy to estimate and are available in many statistical
+languages. R users have the `irr` package [@gamer2019irr], which provides
 functions to estimate those statistics for any dataset. Scholars are also
 expected to report the results of these tests in their materials, as well as a
 justification for the minimum acceptable level of intercoder reliability they
@@ -319,11 +320,11 @@ When the data come from secondary sources and the scholar wants to combine them
 into an index, it is good practice to describe how aggregation rules may change
 the results. Loss of information is inevitable when aggregating attributes into
 an index, so scholars need to first clarify which of the attributes will be
-combined and for what reason. This is where theory comes in, as aggregation
-rules should be theoretically motivated. For instance, it is unclear whether
-additivity, the default method for merging low-level attributes, is the best
-aggregation rule for most indices, or why scholars do not weight their
-attributes more often [@munck2002conceptualizing, 24]. As long as the moves are
+combined and for what reason. There is where theory comes in, as aggregation
+rules should always be theoretically motivated. For instance, it is unclear
+whether additivity, the default method for merging low-level attributes, is the
+best aggregation rule for most indices, or why scholars do not weight their
+attributes more often [@munck2002conceptualizing, 24]. As long as the steps are
 theoretically consistent, researchers can use very different methods for index
 construction.
 
@@ -335,21 +336,21 @@ technique to model latent traits [@conti2014bayesian]. While researchers have
 long used principal component analysis (PCA) to reduce the dimensionality of a
 dataset, BFA has several advantages over PCA. BFA propagates uncertainty in the
 estimates, allows for correlated factors and control variables, and can either
-decide automatically or let the users include as many factors as they see fit
-into the index. The R package `BayesFM` [@piatek2020bayesfm] performs the
-analysis described here. 
+decide automatically or let users include as many factors as they see fit into
+the index. The R package `BayesFM` [@piatek2020bayesfm] performs the analysis
+presented here. 
 
 ## Step 5: Convergent Validity
 
-The last step concerns how well the variables compare with well-documented cases.
-@mcmann2016strategies suggest that researchers should evaluate their dataset
-against other data sources that cover the same topics, including qualitative
-studies. We can borrow the idea of validation functions discussed above and apply
-the same logic here. However, the statements come from domain knowledge, thus
-authors and reviewers should be familiar with the specialised literature in
-order to check the consistency of the convergence rules.  
+The last step concerns how well the variables compare with well-documented
+cases. @mcmann2016strategies suggest that researchers should evaluate their
+dataset against other sources that cover the same topics, including qualitative
+studies. We can borrow the idea of validation functions discussed above and
+apply the same logic here. But as I noted above, as the statements come from
+domain knowledge, authors and reviewers should be familiar with the specialised
+literature in order to check the consistency of the convergence rules.  
 
-Consider a data set with two variables: `gender` and `salary`. Suppose that a
+Consider a data set with two variables, `gender` and `salary`. Suppose that a
 previous case study in the same location states with high confidence that 20%
 of males have earnings lower than $2,000 per month. We can formulate a
 validation rule set as follows:
@@ -357,32 +358,30 @@ validation rule set as follows:
 * IF `gender == "male"`
 * THEN $\frac{count(\texttt{salary} \hspace{0.1cm} > \hspace{0.1cm} 2,000)}{count(\texttt{salary})} = 0.2$
 
-The example shows how researchers can integrate _a priori_ information to their
+The example shows how researchers can integrate previous information to their
 estimates. Authors can select the case studies they want to analyse using
 different criteria. @seawright2008case offer an interesting comparison between
 seven case selection methods and the corresponding large-_N_ statistical
-reasoning behind the choices. The first method is selecting the _typical_ case,
-one that best represents the intended relationship. This is the equivalent of
-analysing low-residual cases, those which are very close to the fitted
-statistical curve. Authors can choose _diverse_ cases to compare if they are
-interested in obtaining a range for their variables, or points in an ordinal
-scale. Third, _extreme_ cases describe observations that lie in the tails of
-the distribution. _Deviant_ cases are akin to outliers in statistical
-modelling. _Influential_ cases are those which are often not representative,
-but have a particular effect caused by independent variables. The last two
-cases are similar to those I have discussed above, _most similar_, which
-parallels matching techniques in large-_N_ studies, and _most different_, its
+reasoning behind the choices. The first method is the selection of _typical_
+cases, ones that best represent the intended relationship. This is the
+equivalent of analysing low-residual observations, those which are very close
+to the fitted statistical curve. Authors can choose _diverse_ cases if they are
+interested in obtaining a range for their variables. This is similar to
+checking the spread of a statistical distribution. Third, _extreme_ cases
+describe observations that lie at the tails of a distribution. _Deviant_ cases
+are akin to outliers in statistical modelling. _Influential_ cases are those
+which are often not representative, but have a particular effect caused by
+independent variables. The last two cases are: _most similar_, which
+parallels matching techniques in large-_N_ studies; and _most different_, its
 opposite. Please refer to @seawright2008case for more information on case
 selection strategies.
 
 Finally, authors should explain the reasons behind eventual divergences between
-their measurements and current theoretical expectations. Validation functions
-have the advantage of being transparent to referees and editors, thus making
-the assumptions explicit and allowing reviewers to assess the work using
-logical statements. That said, it is recommended that authors investigate why
-outliers occur and test whether coder characteristics or measurement
-construction explain these differences. @mcmann2016strategies [p. 27-36]
-provide an empirical case study on how to assess convergent validity.
+their measurements and current theoretical expectations. That said, it is
+recommended that authors investigate why outliers occur and test whether coder
+characteristics or measurement construction explain these differences.
+@mcmann2016strategies [p. 27-36] provide an empirical case study on how to
+assess convergent validity.
 
 # Conclusion
 
