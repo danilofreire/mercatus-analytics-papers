@@ -107,7 +107,7 @@ Automated algorithms are a recent addition to the machine learning field.
 @thornton2013auto proposed the first method to jointly address the problems of
 algorithm selection and parameter optimisation, and their results show that
 automated solutions often outperform baseline models. Since then, the
-literature has grown significantly. Today, there is a multitude of AutoML
+literature has grown significantly. Today, there are a multitude of AutoML
 algorithms available for non-expert users, which are not only able to predict
 numeric data, but also to classify objects, translate text, annotate videos,
 and perform sentiment analysis in social media with few instructions
@@ -251,7 +251,7 @@ print(model.score(X_test, y_test)) # print model evaluation
 ```
 
 Where $X$ is a matrix of covariates and $y$ is the response variable. `TPOT`
-has a `export` function that is useful for those who need to export the
+has an `export` function that is useful for those who need to export the
 optimised model and deploy it in other settings. Users can also customise
 `TPOT`'s hyperparameters for classification and regression tasks. `TPOT`'s
 documentation is available at <http://epistasislab.github.io/tpot/>.
@@ -546,7 +546,7 @@ users can add any other software or folders to the base Docker image. Instead
 of sharing just data and code, as it is common practice in the social sciences,
 scholars can distribute their complete software environment to collaborators
 and reviewers. Thus, Docker guarantees that all computer libraries are
-identical to the ones in the original analysis, what ensures complete
+identical to the ones in the original analysis, which ensures complete
 reproducibility and easy deployment to other machines.
 
 [^docker]: Please find the Docker documentation files at <https://docs.docker.com>.

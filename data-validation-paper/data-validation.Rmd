@@ -89,7 +89,7 @@ The computer science literature has some important suggestions in this regard.
 First, data should be "tidy", that is, in a format where each column represents
 one variable, each row represents one observation, and each observational unit
 forms a table [@wickham2014tidy, 4]. Although the definition seems intuitive,
-scholars sometimes break these rules when building a new data. It is not
+scholars sometimes break these rules when building a new dataset. It is not
 uncommon to see multiple variables stored as a single column (e.g., race and
 gender together) or one variable divided into many columns (e.g., one column
 per level of income). Fortunately, most datasets can be tidied up with simple
@@ -192,13 +192,13 @@ possible avenue for research is to compare whether certain conditional
 statements produce different outcomes in datasets that measure the same
 phenomena, such as level of democracy or changes in political regimes.
 Observations that do not conform to the rules should be contrasted and
-explained, and if that is case, imputed to credible values. Indeed,
+explained, and if that is the case, imputed to credible values. Indeed,
 @dewaal2017imputation suggests that imputation methods that both preserve
 statistical properties of the variables and conform to rule restrictions are
 the best way to fill missing data, even if so far they are difficult to
 estimate.
 
-Testing data with conditional expressions provide another benefit for
+Testing data with conditional expressions provides another benefit for
 researchers. Since logical rules can be defined in advance, they may be
 included in a preregistration plan. Registering the study design before data
 collection or analysis reduces the chances of "data dredging", where
@@ -253,7 +253,7 @@ categories. For instance, if one defines "armed conflict" as "the use of force
 by the state or civilians against other groups", it is not possible to
 differentiate such cases from episodes of lynchings or genocide.
 
-Similarly, *fecundity* indicates that the variable is parsimonious and exclude
+Similarly, *fecundity* indicates that the variable is parsimonious and excludes
 all information that is not related to the concept. It refines the
 differentiation attribute and highlights that it is not only required for
 scholars to affirm what the concept is, but also to show what *it is not*
@@ -278,8 +278,8 @@ which the concept described is either the main cause or the expected effect
 independent variables require fewer attributes to be causally useful than those
 created to be dependent variables [@gerring2011social, 130]. While it is hard
 to ensure that a concept is completely exogenous from other theoretical
-constructs, authors should avoid a definition that includes known confounders
-connect the concept to background factors [@gerring2011social, 130].
+constructs, authors should avoid a definition where known confounders connect
+the concept to background factors [@gerring2011social, 130].
 
 ## Step 4: Data Generation Validity
 
@@ -323,7 +323,7 @@ an index, so scholars need to first clarify which of the attributes will be
 combined and for what reason. There is where theory comes in, as aggregation
 rules should always be theoretically motivated. For instance, it is unclear
 whether additivity, the default method for merging low-level attributes, is the
-best aggregation rule for most indices, or why scholars do not weight their
+best aggregation rule for most indices, or why scholars do not weigh their
 attributes more often [@munck2002conceptualizing, 24]. As long as the steps are
 theoretically consistent, researchers can use very different methods for index
 construction.
