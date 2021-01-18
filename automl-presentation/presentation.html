@@ -33,8 +33,6 @@ class: middle, left, title-slide
 
 * Optimise resource allocation: fire inspection teams, patients
 
-* Machine learning can improve public policy by making state interventions more effective
-  
 ---
 
 # Motivation
@@ -66,13 +64,11 @@ class: middle, left, title-slide
 * Automated machine learning (AutoML) is a new framework that automatically
   optimises algorithms
 
-* Easy to install, quick to deploy, some need just two lines of code to
+* Easy to install, quick to deploy, one needs just four lines of code to
   estimate thousands of models
 
 * Widely used in computer science, little known in political science and
   economics
-
-* Perfectly usable to public policy problems
 
 ---
 
@@ -80,7 +76,7 @@ class: middle, left, title-slide
 
 * Brief overview of three AutoML algorithms for Python
 
-* Show how to install and use them with tabular data
+* How to install and use AutoML with tabular data
 
 * Replicate [Ward et al. (2011)](https://journals.sagepub.com/doi/10.1177/0022343309356491) and
   predict civil war onset using AutoML algorithms
@@ -88,7 +84,7 @@ class: middle, left, title-slide
 * AutoML has great performance, even beating the benchmark in some
   specifications
 
-* Show how to use [Docker](docker.com) to create a fully reproducible machine
+* How to use [Docker](docker.com) to create a fully reproducible machine
   learning pipeline 
 
 * Share and replicate models with containers
@@ -162,7 +158,7 @@ class: center, middle, inverse
 
 # Cons
 
-* Take a while to run
+* Often take a while to run
 
 * Computationally intensive for large datasets 
 
@@ -261,7 +257,7 @@ predictions = model.predict(test)                # get predictions
 
 # TPOT
 
-* One of the easiest AutoML algorithms to use
+* Very easy to use
 
 
 ```python
@@ -296,7 +292,7 @@ class: center, middle, inverse
 # Ward et al. (2011)
 
 * Hard case for predictive algorithms:
-  - Rare event
+  - Rare event (~ 1%)
   - Noisy data
   - Measurement error
   - Causal relationships not well defined
