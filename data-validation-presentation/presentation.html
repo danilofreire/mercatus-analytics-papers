@@ -64,19 +64,15 @@ class: middle, left, title-slide
 * Provide references for those interested in theoretical discussions about data
   validation
 
-* Offer s simple check-list that experienced users may adopt to quickly assess
+* Offer a simple check-list that experienced users may adopt to quickly assess
   the quality of their new data
 
----
-
-
-class: center, middle, inverse
-
-# Step 1: Technical Consistency
+* Five steps: technical consistency, logical consistency, content validity,
+  data generation validity, and convergent validity
 
 ---
 
-# Technical consistency
+# Step 1: Technical consistency
 
 * Easiest part of data validation...
 
@@ -88,7 +84,7 @@ class: center, middle, inverse
 
 --
 
-* Technical consistency: _data should be machine-readable and as intuitive as possible to humans_
+* **Technical consistency**: _data should be machine-readable and as intuitive as possible to humans_
 
 
 --
@@ -142,9 +138,9 @@ class: center, middle, inverse
 
 ---
 
-# Logical consistency
+# Step 2: Logical consistency
 
-* Logical consistency: the elaboration of logical validation rules to assess the consistency of recorded values
+* **Logical consistency**: _the elaboration of logical validation rules to assess the consistency of recorded values_
 
 * Requires _a priori_ knowledge; logical validation methods are domain-specific by design
 
@@ -152,8 +148,8 @@ class: center, middle, inverse
 
 * Example: a researcher measures the average population age and GDP per capita. Thus, the data should have no negative values or include zero
 
-* IF age `\(\leq 0\)` OR gdp_per_capita `\(\leq 0\)` == FALSE
-* ELSE == TRUE
+* IF `\(\texttt{age} \leq 0\)` OR `\(\texttt{gdp_per_capita} \leq 0 \hspace{0.4cm} \texttt{== FALSE}\)`
+* `\(\texttt{ELSE == TRUE}\)`
 
 ---
 
@@ -185,34 +181,181 @@ class: center, middle, inverse
 
 ---
 
-# Conclusion
+# Why is this useful?
 
-* AutoML's predictive accuracy can be as good as, or better than, expert-coded models
+* Not only applied to new datasets, but also useful to evaluate existing data
+  - Compare similar datasets that measure the same latent variable
 
-* Models can be easily shared and deployed with Docker containers
+* Logical rules can be defined in advance
 
-* Docker ensures that all analyses are fully reproducible
+* Reduce false positives
 
-* One step further from our current reproducibility practices
-
-* Users can host their entire machine learning pipelines on DockerHub
+* Included in preregistration plans and journal submissions
 
 ---
 
-# Next steps
+# Step 3: Content validity
 
-* Test how well automated machine learning works with textual data
-  - Content classification, sentiment analysis, document translation
+* **Content validity**: _whether the variables correspond to the theoretical concepts they intend to measure_
 
-* Compare the performance of AutoML algorithms in other areas of interest to
-  policy analysts
-  - Electoral outcomes, economic forecasting
+* Most difficult task in the data validation process
 
-* Test whether AutoML can be useful to find heterogeneous treatment effects in
-  experimental research
+* [John Gerring](https://www.jstor.org/stable/3235246)'s criteria:
+  - Resonance, domain, differentiation, fecundity, consistency, and causal utility
 
-* Write an applied research paper replicating a number of studies that forecast
-  civil conflicts
+---
+
+# Resonance and domain
+
+* **Resonance**: the variable name brings to mind the core idea of a concept 
+
+* Mnemonic devices: readers have an intuitive understanding of the concept,
+  even if the variable itself is difficult to operationalise
+  - "Civic culture", "social capital"
+
+* **Domain**: whether relevant parties agree with the concept being measured
+
+* How _area specialists_ understand the measure
+
+* Specialists and the lay community may have very different ideas of what
+  "democracy" means
+
+* Ideally, the more domains a concept covers, the better; if not possible,
+  stick to those most widely accepted in the field
+
+---
+
+# Differentiation and fecundity
+
+* **Differentiation**: the variable should include the unique aspects of a given concept
+
+* Establish boundaries that separate your variable from similar ones
+  - States are not the same as tribes or empires: what makes them different?
+
+* **Fecundity**: parsimony
+
+* It is important to say what the variable is, but it is equally important to
+  say _what it is not_
+  - Counterfactual thinking: what are the competing definitions for the
+    concept?
+
+---
+
+# Consistency and causal utility
+
+* **Consistency**: whether a concept retains its validity across different settings
+
+* Focus on sufficient attributes:
+  - A measure of democracy should explain not only current Western regimes
+
+* **Causal utility**: researchers are able to test hypotheses in which the concept described is either the main cause or the expected effect
+
+* In most cases, concepts designed to be employed as independent variables require fewer attributes to be causally useful than those created to be dependent variables
+
+---
+
+# Step 4: Data generation validity
+
+* **Data generation validity**: _the relationship between the concepts the researcher wants to translate into numeric values and the data generating process_
+
+* Coding might be biased or unreliable
+
+* Two common problems:
+  - Low intercoder reliability
+  - Data aggregation challenges
+
+---
+
+# Low intercoder reliability
+
+* Calculate intercoder agreement using two popular statistics, Cohen’s Kappa and Krippendorff's Alpha (irr package for R)
+
+* Report the results of these tests in the data documentation files; justify
+  which level is acceptable
+
+* What to do when intercoder reliability is low?
+
+* Allow coders to discuss and explain to each other where they disagree
+
+* If time allows, implement multiple coding rounds and modify the coding frame accordingly
+
+* Apply item-response theory (IRT) models to convert ordinal data to latent variables
+
+---
+
+# Data aggregation issues
+
+* Creating indexes always leads to some type of information loss
+
+* First clarify which of the attributes will be combined and for what reason
+
+* Theory comes in: aggregation rules should always be theory-driven
+  - Why additivity?
+  - Why not using different weights to attributes?
+
+* If the theory is silent about the problem at hand, statistical solutions can
+  help
+  - Bayesian Factor Analysis to model latent traits
+
+---
+
+# Step 5: Convergent validity
+
+* **Convergent validity**: how well the variables compare with well-documented cases
+
+* Similar to logical consistency, but addresses external validity of the
+  dataset
+
+* Suppose that a previous case study in the same location states with high confidence that 20% of males have earnings lower than $2,000 per month. We can formulate a validation rule set as follows:
+
+* IF `\(\texttt{gender == "male"}\)`
+* THEN `\(\frac{count(\texttt{salary} \hspace{0.1cm} &gt; \hspace{0.1cm} 2,000)}{count(\texttt{salary})} = 0.2\)`
+
+---
+
+# Selecting case studies to assess convergent validity
+
+* Again, I borrow some ideas from [Gerring and Seawright](https://doi.org/10.1177%2F1065912907313077): seven case study selection strategies
+
+* *Typical cases*, ones that best represent the intended relationship (low
+  residuals)
+
+* *Diverse cases*, to obtain a range (spread of the distribution)
+
+* *Deviant cases*, to model outliers
+
+---
+
+# Selecting case studies to assess convergent validity
+
+* *Influential cases*, not representative, but have a particular effect
+
+* *most similar*, cases similar to each other (matching)
+
+* *most different*, no common factors except the dependent variable
+
+---
+
+# Conclusion
+
+* "80% of data analysis is spent on the process of cleaning and preparing the
+  data"...
+
+* ...yet we give little training to our students on how to validate data
+
+* My goal in this short paper was not to provide an abstract view of the data validation process, but to offer a few pieces of practical advice that social scientists may find useful
+
+* I divided the data validation process in five steps, from technical consistency to convergent validity, and added reading suggestions for authors who would like to read more about the topics discussed here
+
+---
+
+# Conclusion
+
+* Scholars should pay special attention to issues of logical consistency and content validity, which are particularly difficult parts of the data validation process
+
+* Translating concepts into numeric values is more art than science
+
+* But we can do a bit better to teach the craft to young scholars 
 
 ---
 
