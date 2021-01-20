@@ -1,0 +1,250 @@
+---
+title: "How to Improve Data Validation in Five Steps<br><br>"
+subtitle: ""
+author: "Danilo Freire<br>"
+date: '<font size="6">20^th^ of January, 2021</font><br><br> `r icon::fa("link")` <a href="http://danilofreire.github.io" target="_blank"><font size="5" color="white">danilofreire.github.io</font></a><br> `r icon::fa("github")` <a href="http://github.com/danilofreire/mercatus-analytics-papers" target="_blank"><font size="5" color="white">github.com/danilofreire/mercatus-analytics-papers</font></a><br>'
+output:
+  xaringan::moon_reader:
+    css: xaringan-themer.css
+    nature:
+      beforeInit: "macros.js"
+      countIncrementalSlides: false
+      highlightLines: true
+      highlightStyle: github
+      ratio: 16:10
+      titleSlideClass: [middle, left]
+---
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+options(htmltools.dir.version = FALSE)
+list.of.packages <- c("xaringan", "xaringanthemer")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+library(xaringanthemer)
+style_mono_accent(
+  base_color = "#1c5253",
+  header_h1_font_size = "2.25rem",
+  header_h2_font_size = "1.85rem",
+  header_font_google  = google_font("Josefin Sans"),
+  text_font_google    = google_font("Montserrat", "300", "300i"),
+  text_font_size      = "1.45rem",
+  code_font_google    = google_font("Fira Mono")
+)
+```
+
+# Motivation
+
+* Social scientists produce and consume more data than ever before
+
+* Governments have made public data available to users to download directly or
+  via APIs
+
+* Sparked a large interest in tools to manage and analyse data
+
+* Standardised methods to reproduce computational analysis, store scripts and
+  data, run statistical models
+
+---
+
+# Motivation
+
+* However, we have little guidance on how to validate new datasets
+
+* Not covered in undergraduate classes, _ad hoc_ advice in graduate courses
+
+* Most the literature comes from computer science, deals with specific types
+  of data (high-frequency, very fine scale)
+
+* Little discussion on conceptual validity or measurement errors
+
+--
+
+* _What rules should social scientists follow if they want to start collecting
+  new data?_
+
+---
+
+# What I do
+
+* Give some practical advice on how to start a data validation process
+
+* Provide a short reading that scholars can use to introduce the topic to
+  undergraduate students
+
+* Provide references for those interested in theoretical discussions about data
+  validation
+
+* Offer s simple check-list that experienced users may adopt to quickly assess
+  the quality of their new data
+
+---
+
+
+class: center, middle, inverse
+
+# Step 1: Technical Consistency
+
+---
+
+# Technical consistency
+
+* Easiest part of data validation...
+
+
+--
+
+* Very often overlooked even by experienced users
+
+
+--
+
+* Technical consistency: _data should be machine-readable and as intuitive as possible to humans_
+
+
+--
+
+* Others should be able to analyse your data immediately after receiving it
+
+* What are the best practices in computer science?
+
+---
+
+# Tidy data
+
+* [Tidy data](https://vita.had.co.nz/papers/tidy-data.html)
+  - Each column represents one variable
+  - Each row represents one observation
+  - Each observational unit forms a table
+
+![Tidy data](../data-validation-paper/tidy.png)
+
+---
+
+# Column types
+
+* `ID` column clearly identified
+
+* Strings as character vectors; numbers as numeric values (floating points or integers); binary indicators as boolean vectors (`TRUE` or `FALSE`); and categorical variables as factors (ESSnet ValiDat Foundation 2018)
+
+* UTF-8 encoding (96% of all internet websites)
+
+* `YYYY-MM-DD` (ISO 8601 standard)
+
+* Files in `.csv` whenever possible
+
+---
+
+# Git and GitHub
+
+.pull-left[
+<img src="final.gif" width="500" height="550" class="center"/>
+]
+
+--
+
+.pull-right[
+* _Please_ use version control software
+
+* [Git](https://git-scm.com) and [GitHub](http://github.com) are great tools
+
+* Version control your data, scripts, and documentation
+]
+
+---
+
+# Logical consistency
+
+* Logical consistency: the elaboration of logical validation rules to assess the consistency of recorded values
+
+* Requires _a priori_ knowledge; logical validation methods are domain-specific by design
+
+* However, we can use boolean statements to evaluate the data (`TRUE` or `FALSE`)
+
+* Example: a researcher measures the average population age and GDP per capita. Thus, the data should have no negative values or include zero
+
+* IF age $\leq 0$ OR gdp_per_capita $\leq 0$ == FALSE
+* ELSE == TRUE
+
+---
+
+# Logical consistency
+
+* What to do when no information on true values exist?
+
+--
+
+* Estimate upper and lower bounds for the variable using Monte Carlo
+
+--
+
+* First step: create a value set $S$ that seems plausible within your data
+
+--
+
+* Second step: add disturbances to $S$ by including coding errors, missing
+  values, etc. This yield a variable $S + \epsilon = S'$
+
+--
+
+* Third step: apply the consistency test to $S'$
+
+--
+
+* Fourth step: repeat the process with other error rates to produce the
+  distribution $S_n$
+
+---
+
+# Why is this useful?
+
+
+
+
+---
+
+# Conclusion
+
+* AutoML's predictive accuracy can be as good as, or better than, expert-coded models
+
+* Models can be easily shared and deployed with Docker containers
+
+* Docker ensures that all analyses are fully reproducible
+
+* One step further from our current reproducibility practices
+
+* Users can host their entire machine learning pipelines on DockerHub
+
+---
+
+# Next steps
+
+* Test how well automated machine learning works with textual data
+  - Content classification, sentiment analysis, document translation
+
+* Compare the performance of AutoML algorithms in other areas of interest to
+  policy analysts
+  - Electoral outcomes, economic forecasting
+
+* Test whether AutoML can be useful to find heterogeneous treatment effects in
+  experimental research
+
+* Write an applied research paper replicating a number of studies that forecast
+  civil conflicts
+
+---
+
+class: center, middle, inverse
+
+# Thank you very much!
+
+---
+
+# Let's keep in touch!
+
+<br><br><br>
+
+* Danilo Freire:
+
+  - [danilofreire@gmail.com](mailto:danilofreire@gmail.com)
+  - <http://danilofreire.github.io>
+  - <http://github.com/danilofreire/mercatus-analytics-papers>
