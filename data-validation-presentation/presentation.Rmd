@@ -342,9 +342,9 @@ style_mono_accent(
 
 * *Influential cases*, not representative, but have a particular effect
 
-* *most similar*, cases similar to each other (matching)
+* *Most similar*, cases similar to each other (matching)
 
-* *most different*, no common factors except the dependent variable
+* *Most different*, no common factors except the dependent variable
 
 ---
 
