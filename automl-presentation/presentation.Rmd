@@ -101,20 +101,6 @@ style_mono_accent(
 
 ---
 
-# Goals
-
-* Encourage scholars unfamiliar with machine learning to use predictive models
-
-* Provide experienced users with useful benchmarks
-
-* Show that AutoML can be easily taught at computational social science
-  courses, graduate and undergraduate levels
-
-* Motivate scholars to move beyond current reproducibility practices and adopt
-  a more comprehensive approach to replication
-
----
-
 class: center, middle, inverse
 
 # Overview of three AutoML algorithms
