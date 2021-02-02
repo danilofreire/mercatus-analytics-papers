@@ -68,7 +68,7 @@ agency that provides statistical information to the European Union (EU), and on
 recommendations by @gerring2001social, @mcmann2016strategies, and
 @schedler2012judgment. I discuss how to create testable validation functions,
 how to increase construct validity, and how to incorporate qualitative
-knowledge to statistical measurements. I present the concepts according to
+knowledge in statistical measurements. I present the concepts according to
 their level of abstraction, with the last three demanding more theorisation
 than the first two, and I provide practical examples on how scholars can add
 the suggestions below to their work.
@@ -104,7 +104,7 @@ knitr::include_graphics("~/Documents/github/mercatus-analytics-papers/data-valid
 It is important to add an identifying variable (primary key) that is unique
 across all records [@van2019data, 1]. This is particularly relevant when
 scholars need to merge different datasets, as the primary keys have to be the
-same across all tables. Also, variables should have appropriate column types,
+same across all tables. Also, variables should have appropriate cell formats,
 or the machine may not be able to parse the values correctly. For instance,
 users should store strings as character vectors, numbers as numeric values
 (floating points or integers), binary indicators as boolean vectors (`TRUE` or
@@ -136,9 +136,10 @@ well with pure text files like `.csv`. This increases transparency in academic
 research, as others can trace all steps of the data management process and
 serve as a reliable back up in the case of data loss [@ram2013git]. Moreover,
 contributors can modify the files and merge them to the main Git repository,
-what facilitates collaboration and review at every stage of the research
-project. Since users can quickly revert file changes with Git, the process is
-risk-free. For more information about Git, please visit <https://git-scm.com>.
+which facilitates collaboration and review at every stage of the research
+project. Since users can quickly revert to previous versions of a file, the
+process is risk-free. For more information about Git, please visit
+<https://git-scm.com>.
 
 ## Step 2: Logical Consistency
 
@@ -323,10 +324,10 @@ an index, so scholars need to first clarify which of the attributes will be
 combined and for what reason. There is where theory comes in, as aggregation
 rules should always be theoretically motivated. For instance, it is unclear
 whether additivity, the default method for merging low-level attributes, is the
-best aggregation rule for most indices, or why scholars do not weigh their
-attributes more often [@munck2002conceptualizing, 24]. As long as the steps are
-theoretically consistent, researchers can use very different methods for index
-construction.
+best aggregation rule for most indices, or why scholars do not assign unequal
+weights to their attributes more often [@munck2002conceptualizing, 24]. As long
+as the steps are theoretically consistent, researchers can use very different
+methods for index construction.
 
 There are cases, nevertheless, where one has no _a priori_ knowledge about what
 features to include in an aggregate measure. It can either be because the
